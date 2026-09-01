@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - JulJones</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <h1>JulJones</h1>
+                    <span class="tagline">Authentic Ghanaian Cuisine</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html" class="active">Menu</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Order Now</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menu Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1>Our Menu</h1>
+            <p>Discover our wide selection of authentic Ghanaian dishes</p>
+        </div>
+    </section>
+
+    <!-- Menu Categories -->
+    <section class="menu-section">
+        <div class="container">
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="all">All Dishes</button>
+                <button class="category-btn" data-category="rice">Rice Dishes</button>
+                <button class="category-btn" data-category="stew">Stews & Soups</button>
+                <button class="category-btn" data-category="snacks">Snacks</button>
+                <button class="category-btn" data-category="drinks">Drinks</button>
+            </div>
+
+            <!-- Rice Dishes -->
+            <div class="menu-category" id="rice">
+                <h2 class="category-title">Rice Dishes</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" id="jollof" data-category="rice" data-dish-id="jollof-rice" data-dish-name="Jollof Rice" data-dish-price="25">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder jollof"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Jollof Rice</h3>
+                                <span class="price">₵25</span>
+                            </div>
+                            <p>Our signature one-pot rice dish cooked in rich tomato sauce with aromatic spices, onions, and peppers. Served with your choice of chicken, beef, or fish.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Medium Spice</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item" id="fried-rice" data-category="rice" data-dish-id="fried-rice" data-dish-name="Fried Rice" data-dish-price="28">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder fried-rice"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Fried Rice</h3>
+                                <span class="price">₵28</span>
+                            </div>
+                            <p>Perfectly seasoned rice stir-fried with fresh vegetables including carrots, green beans, and bell peppers. Available with chicken, beef, or shrimp.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Mild</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item" id="waakye" data-category="rice" data-dish-id="waakye" data-dish-name="Waakye" data-dish-price="22">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder waakye"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Waakye</h3>
+                                <span class="price">₵22</span>
+                            </div>
+                            <p>Traditional rice and beans cooked with millet leaves, giving it a unique color and flavor. Served with shito (black pepper sauce), gari, spaghetti, and your choice of protein.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Customizable</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item" data-category="rice" data-dish-id="omotuo" data-dish-name="Omotuo (Rice Balls)" data-dish-price="20">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder rice-balls"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Omotuo (Rice Balls)</h3>
+                                <span class="price">₵20</span>
+                            </div>
+                            <p>Soft, sticky rice balls served with groundnut soup. A comforting traditional dish perfect for any time of day.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Mild</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stews & Soups -->
+            <div class="menu-category" id="stew">
+                <h2 class="category-title">Stews & Soups</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" id="yam" data-category="stew" data-dish-id="yam" data-dish-name="Yam" data-dish-price="20">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder yam"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Yam</h3>
+                                <span class="price">₵20</span>
+                            </div>
+                            <p>Delicious yam served with your choice of sauce or stew. A simple yet satisfying traditional dish.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Customizable</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item" data-category="stew" data-dish-id="fufu-light-soup" data-dish-name="Fufu & Light Soup" data-dish-price="25">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder fufu"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Fufu & Light Soup</h3>
+                                <span class="price">₵25</span>
+                            </div>
+                            <p>Pounded cassava and plantain served with light soup, goat meat, or chicken. A classic Ghanaian comfort food.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Medium</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item" data-category="stew" data-dish-id="groundnut-soup" data-dish-name="Groundnut Soup" data-dish-price="28">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder groundnut"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Groundnut Soup</h3>
+                                <span class="price">₵28</span>
+                            </div>
+                            <p>Rich and creamy peanut soup with tender meat, fish, or chicken. Served with rice balls or fufu. A northern Ghana specialty.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Medium</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Snacks -->
+            <div class="menu-category" id="snacks">
+                <h2 class="category-title">Snacks & Sides</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-category="snacks" data-dish-id="kelewele" data-dish-name="Kelewele" data-dish-price="15">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder kelewele"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Kelewele</h3>
+                                <span class="price">₵15</span>
+                            </div>
+                            <p>Spicy fried plantains seasoned with ginger, garlic, and cayenne pepper. A popular street food snack.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Hot</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="menu-item" data-category="snacks" data-dish-id="pie" data-dish-name="Pie" data-dish-price="10">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder pie"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Pie</h3>
+                                <span class="price">₵10</span>
+                            </div>
+                            <p>Enjoy a delicious pie with your choice of meat, fish, or vegetables.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🌶️ Mild</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Drinks -->
+            <div class="menu-category" id="drinks">
+                <h2 class="category-title">Beverages</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-category="drinks" data-dish-id="sobolo" data-dish-name="Sobolo (Hibiscus Drink)" data-dish-price="8">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder sobolo"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Sobolo (Hibiscus Drink)</h3>
+                                <span class="price">₵8</span>
+                            </div>
+                            <p>Refreshing hibiscus drink with ginger and spices. Served cold, perfect for hot days.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🧊 Cold</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="menu-item" data-category="drinks" data-dish-id="fresh-juice" data-dish-name="Fresh Fruit Juice" data-dish-price="10">
+                        <div class="menu-item-image">
+                            <div class="dish-placeholder fresh-juice"></div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <h3>Fresh Fruit Juice</h3>
+                                <span class="price">₵10</span>
+                            </div>
+                            <p>Freshly squeezed fruit juice. Available in orange, pineapple, mango, and mixed fruit.</p>
+                            <div class="menu-item-footer">
+                                <span class="spice-level">🧊 Cold</span>
+                                <button type="button" class="btn btn-small add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Order?</h2>
+                <p>Place your order now and enjoy authentic Ghanaian flavors delivered to you</p>
+                <a href="contact.html" class="btn btn-primary btn-large">Place Your Order</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>JulJones</h3>
+                    <p>Bringing authentic Ghanaian cuisine to your table since day one.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📍 Accra, Ghana</p>
+                    <p>📞 +233 XX XXX XXXX</p>
+                    <p>✉️ info@juljones.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Opening Hours</h4>
+                    <p>Mon - Sat: 8:00 AM - 10:00 PM</p>
+                    <p>Sunday: 10:00 AM - 8:00 PM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 JulJones. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
+</body>
+</html>
+

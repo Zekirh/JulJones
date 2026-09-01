@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+admin/database.json
+
+.DS_Store
+Thumbs.db
+
+.vscode/*
+!.vscode/settings.json

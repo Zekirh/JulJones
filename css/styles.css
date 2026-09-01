@@ -1,0 +1,1248 @@
+/* ============================================
+   JULJONES - Premium Food Website Styles
+   ============================================ */
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Vibrant Color Palette */
+    --primary-color: #FF6B35;
+    --primary-dark: #E55A2B;
+    --primary-light: #FF8C5A;
+    --secondary-color: #F7931E;
+    --accent-color: #FFD23F;
+    --dark-bg: #1A1A1A;
+    --dark-text: #2C2C2C;
+    --light-bg: #FFF8F5;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --white: #FFFFFF;
+    --border-color: #E8E8E8;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 8px 30px rgba(255, 107, 53, 0.2);
+    
+
+    /* Typography */
+    --font-primary: 'Poppins', sans-serif;
+    --font-display: 'Playfair Display', serif;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-color: var(--white);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ============================================
+   Navigation
+   ============================================ */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo h1 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin: 0;
+    font-weight: 700;
+}
+
+.tagline {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: block;
+    margin-top: -5px;
+    font-weight: 300;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+    width: 100%;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: var(--primary-color);
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--primary-color);
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+/* ============================================
+   Hero Section
+   ============================================ */
+
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.3) 0%, rgba(247, 147, 30, 0.3) 100%), url('Juljones/Juljones.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    margin-top: 70px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+    opacity: 0.3;
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100px); }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--white);
+    padding: 2rem;
+    animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+    opacity: 0.95;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--white);
+    z-index: 2;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.arrow {
+    width: 2px;
+    height: 30px;
+    background: var(--white);
+    margin: 10px auto;
+    position: relative;
+}
+
+.arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -5px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 10px solid var(--white);
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.btn {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+}
+
+.btn-secondary:hover {
+    background: var(--white);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-large {
+    padding: 1.2rem 3rem;
+    font-size: 1.1rem;
+}
+
+.btn-small {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   Featured Dishes
+   ============================================ */
+
+.featured-dishes {
+    padding: 5rem 0;
+    background: var(--light-bg);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.dish-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.dish-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+}
+
+.dish-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.dish-placeholder {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease;
+}
+
+.dish-card:hover .dish-placeholder {
+    transform: scale(1.1);
+}
+
+/* Actual food images from Juljones folder */
+.jollof {
+    background-image: url('Juljones/Jollof.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.fried-rice {
+    background-image: url('Juljones/Fried rice.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.waakye {
+    background-image: url('Juljones/Waakye.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.yam {
+    background-image: url('Juljones/Yam1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.rice-balls {
+    background-image: url('Juljones/Riceballs.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.fufu {
+    background-image: url('Juljones/Fufu.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.groundnut {
+    background-image: url('Juljones/Groundnut1.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.kelewele {
+    background-image: url('Juljones/Kelewele.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.kelewele {
+    background-image: url('Juljones/Pie.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.sobolo {
+    background-image: url('Juljones/Sobolo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.fresh-juice {
+    background-image: url('Juljones/Fruitjuice.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.about-img {
+    background-image: url('Juljones/welcome.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.dish-overlay {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+}
+
+.dish-price {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.dish-info {
+    padding: 1.5rem;
+}
+
+.dish-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+}
+
+.dish-info p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.dish-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.dish-link:hover {
+    color: var(--primary-dark);
+    transform: translateX(5px);
+}
+
+.view-all {
+    text-align: center;
+}
+
+/* ============================================
+   Why Choose Us
+   ============================================ */
+
+.why-choose {
+    padding: 5rem 0;
+    background: var(--white);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    background: var(--light-bg);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+}
+
+.feature-item p {
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   Page Header
+   ============================================ */
+
+.page-header {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.3) 0%, rgba(247, 147, 30, 0.3) 100%), url('Juljones/menu.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 8rem 0 4rem;
+    text-align: center;
+    color: var(--white);
+    margin-top: 70px;
+    position: relative;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.page-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.page-header-content h1 {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.page-header-content p {
+    font-size: 1.2rem;
+    opacity: 0.95;
+}
+
+/* ============================================
+   Menu Section
+   ============================================ */
+
+.menu-section {
+    padding: 4rem 0;
+    background: var(--light-bg);
+}
+
+.menu-categories {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.category-btn {
+    padding: 0.8rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: var(--font-primary);
+}
+
+.category-btn:hover,
+.category-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.menu-category {
+    margin-bottom: 4rem;
+}
+
+.category-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--dark-text);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.menu-grid .menu-item {
+    max-width: 400px;
+}
+
+.menu-item {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.menu-item-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.menu-item-image .dish-placeholder {
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover .menu-item-image .dish-placeholder {
+    transform: scale(1.1);
+}
+
+.menu-item-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 0.5rem;
+}
+
+.menu-item-header h3 {
+    font-size: 1.4rem;
+    color: var(--dark-text);
+    flex: 1;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.menu-item-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.menu-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.spice-level {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   About Section
+   ============================================ */
+
+.about-section {
+    padding: 4rem 0;
+    background: var(--white);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.about-text h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--dark-text);
+    margin-bottom: 1.5rem;
+}
+
+.about-text p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.about-image {
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.about-values {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.value-card {
+    background: var(--light-bg);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.value-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.value-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+}
+
+.value-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.about-features {
+    margin-top: 4rem;
+}
+
+.about-features h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--dark-text);
+}
+
+.features-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-box {
+    background: var(--light-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.feature-box h4 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+}
+
+.feature-box p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ============================================
+   Contact Section
+   ============================================ */
+
+.contact-section {
+    padding: 4rem 0;
+    background: var(--light-bg);
+}
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+}
+
+.contact-form-container h2 {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: var(--dark-text);
+}
+
+.order-form {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark-text);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.9rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.info-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.info-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
+}
+
+.info-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.info-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: var(--dark-text);
+}
+
+.info-item p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+}
+
+.delivery-info {
+    list-style: none;
+}
+
+.delivery-info li {
+    padding: 0.8rem 0;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.delivery-info li:last-child {
+    border-bottom: none;
+}
+
+/* ============================================
+   Gallery Section
+   ============================================ */
+
+.gallery-section {
+    padding: 4rem 0;
+    background: var(--light-bg);
+}
+
+.gallery-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.8rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: var(--font-primary);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-grid .gallery-item {
+    max-width: 350px;
+}
+
+.gallery-item {
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-image {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.gallery-image .dish-placeholder {
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .dish-placeholder {
+    transform: scale(1.2);
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: var(--white);
+    padding: 2rem 1.5rem 1.5rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+}
+
+.gallery-overlay h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-overlay p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ============================================
+   CTA Section
+   ============================================ */
+
+.cta-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    text-align: center;
+    color: var(--white);
+}
+
+.cta-content h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.cta-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+
+.footer {
+    background: var(--dark-bg);
+    color: var(--white);
+    padding: 4rem 0 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.footer-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.footer-section p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: var(--primary-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background: var(--white);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        padding: 2rem 0;
+        gap: 0;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-menu li {
+        width: 100%;
+        padding: 1rem 0;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .dishes-grid,
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header-content h1 {
+        font-size: 2rem;
+    }
+
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-large {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+}
