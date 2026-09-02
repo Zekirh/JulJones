@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JulJones Kitchen</title>
+
+    <link rel="stylesheet" href="staff.css">
+
+    <style>
+        .kitchen-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .connection-status {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(300px, 1fr)
+                );
+            gap: 20px;
+        }
+
+        .order-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow:
+                0 4px 14px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid #999;
+        }
+
+        .order-card.pending {
+            border-left-color: #f59e0b;
+        }
+
+        .order-card.confirmed {
+            border-left-color: #3b82f6;
+        }
+
+        .order-card.preparing {
+            border-left-color: #8b5cf6;
+        }
+
+        .order-card.ready {
+            border-left-color: #10b981;
+        }
+
+        .order-card.out_for_delivery {
+            border-left-color: #06b6d4;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-number {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-confirmed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-preparing {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .status-ready {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-out_for_delivery {
+            background: #cffafe;
+            color: #155e75;
+        }
+
+        .order-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .order-items {
+            margin: 15px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .order-items li {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-items li:last-child {
+            border-bottom: none;
+        }
+
+        .order-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .order-actions button {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .empty-state {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+        }
+
+        .error-state {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .special-instructions {
+            background: #fff7ed;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header class="dashboard-header">
+
+        <div>
+            <h1>JulJones Kitchen</h1>
+
+            <p id="roleDisplay">
+                Checking access...
+            </p>
+        </div>
+
+        <div>
+            <button id="backToDashboard">
+                Dashboard
+            </button>
+
+            <button id="logout">
+                Sign Out
+            </button>
+        </div>
+
+    </header>
+
+
+    <main class="dashboard">
+
+        <div class="kitchen-header">
+
+            <div>
+                <h2>Active Orders</h2>
+
+                <p>
+                    Orders requiring restaurant action.
+                </p>
+            </div>
+
+            <div
+                id="connectionStatus"
+                class="connection-status"
+            >
+                Connecting to live updates...
+            </div>
+
+        </div>
+
+
+        <div
+            id="errorContainer"
+            style="display: none;"
+        ></div>
+
+
+        <section
+            id="ordersContainer"
+            class="orders-grid"
+        ></section>
+
+    </main>
+
+
+    <script type="module" src="kitchen.js"></script>
+
+</body>
+
+</html>

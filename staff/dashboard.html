@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JulJones Staff Dashboard</title>
+
+    <link rel="stylesheet" href="staff.css">
+</head>
+
+<body>
+
+    <header class="dashboard-header">
+
+        <div>
+            <h1>JulJones Staff Portal</h1>
+
+            <p id="roleDisplay">
+                Loading...
+            </p>
+        </div>
+
+        <button id="logout">
+            Sign Out
+        </button>
+
+    </header>
+
+
+    <main class="dashboard">
+
+        <section class="welcome-card">
+
+            <h2 id="welcome">
+                Loading dashboard...
+            </h2>
+
+            <p>
+                Restaurant operations dashboard.
+            </p>
+
+        </section>
+
+
+        <section class="dashboard-grid">
+<article
+    class="dashboard-card"
+    onclick="window.location.href='kitchen.html'"
+    style="cursor: pointer;"
+>
+    <h3>Kitchen</h3>
+
+    <p>
+        View and process incoming orders.
+    </p>
+
+    <button type="button">
+        Open Kitchen
+    </button>
+</article>
+
+            <article class="dashboard-card">
+                <h3>Orders</h3>
+                <p>
+                    Manage customer orders and status.
+                </p>
+            </article>
+
+            <article class="dashboard-card">
+                <h3>Deliveries</h3>
+                <p>
+                    Manage delivery operations.
+                </p>
+            </article>
+
+            <article class="dashboard-card">
+                <h3>Menu</h3>
+                <p>
+                    Manage categories and menu items.
+                </p>
+            </article>
+
+            <article class="dashboard-card">
+                <h3>Payments</h3>
+                <p>
+                    Review payment activity.
+                </p>
+            </article>
+
+            <article
+                id="auditCard"
+                class="dashboard-card"
+            >
+                <h3>Audit Logs</h3>
+                <p>
+                    Review administrative activity.
+                </p>
+            </article>
+
+        </section>
+
+    </main>
+
+
+    <script type="module">
+
+        import {
+            createClient
+        } from "https://esm.sh/@supabase/supabase-js@2";
+
+
+       const SUPABASE_URL = "https://ojvcwtjcbszenatgeyco.supabase.co";
+const SUPABASE_KEY = "sb_publishable_InK1Q2kRf9Dsfo9vTTAEYw_p_RrP4gk";
+
+
+        const supabase =
+            createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        const welcome =
+            document.getElementById("welcome");
+
+        const roleDisplay =
+            document.getElementById("roleDisplay");
+
+        const auditCard =
+            document.getElementById("auditCard");
+
+
+        /*
+        ============================================================
+        VERIFY SESSION
+        ============================================================
+        */
+
+        const {
+            data: {
+                session
+            }
+        } =
+            await supabase.auth.getSession();
+
+
+        if (!session) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+        /*
+        ============================================================
+        VERIFY APPLICATION ROLE
+        ============================================================
+        */
+
+        const {
+            data: profile,
+            error
+        } =
+            await supabase
+                .from("profiles")
+                .select(
+                    "full_name, role"
+                )
+                .eq(
+                    "id",
+                    session.user.id
+                )
+                .single();
+
+
+        if (
+            error ||
+            !profile ||
+            (
+                profile.role !== "staff" &&
+                profile.role !== "manager"
+            )
+        ) {
+
+            await supabase.auth.signOut();
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+        /*
+        ============================================================
+        DISPLAY USER
+        ============================================================
+        */
+
+        welcome.textContent =
+            `Welcome, ${profile.full_name || "Team Member"}`;
+
+        roleDisplay.textContent =
+            `Role: ${profile.role}`;
+
+
+        /*
+        ============================================================
+        MANAGER-ONLY UI
+        ============================================================
+        */
+
+        if (
+            profile.role !== "manager"
+        ) {
+
+            auditCard.style.display =
+                "none";
+
+        }
+
+
+        /*
+        ============================================================
+        LOGOUT
+        ============================================================
+        */
+
+        document
+            .getElementById("logout")
+            .addEventListener(
+                "click",
+                async () => {
+
+                    await supabase.auth.signOut();
+
+                    window.location.href =
+                        "login.html";
+
+                }
+            );
+
+    </script>
+
+</body>
+</html>

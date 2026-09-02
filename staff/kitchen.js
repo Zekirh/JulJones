@@ -1,0 +1,754 @@
+import {
+    createClient
+} from "https://esm.sh/@supabase/supabase-js@2";
+
+
+/*
+============================================================
+SUPABASE
+============================================================
+*/
+
+const SUPABASE_URL = "https://ojvcwtjcbszenatgeyco.supabase.co";
+const SUPABASE_KEY = "sb_publishable_InK1Q2kRf9Dsfo9vTTAEYw_p_RrP4gk";
+
+
+const supabase =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/*
+============================================================
+DOM
+============================================================
+*/
+
+const ordersContainer =
+    document.getElementById(
+        "ordersContainer"
+    );
+
+const roleDisplay =
+    document.getElementById(
+        "roleDisplay"
+    );
+
+const connectionStatus =
+    document.getElementById(
+        "connectionStatus"
+    );
+
+const errorContainer =
+    document.getElementById(
+        "errorContainer"
+    );
+
+
+/*
+============================================================
+STATE
+============================================================
+*/
+
+const ACTIVE_STATUSES = [
+    "pending",
+    "confirmed",
+    "preparing",
+    "ready",
+    "out_for_delivery"
+];
+
+
+let realtimeChannel = null;
+
+
+/*
+============================================================
+ERROR HANDLING
+============================================================
+*/
+
+function showError(message) {
+
+    errorContainer.textContent =
+        message;
+
+    errorContainer.className =
+        "error-state";
+
+    errorContainer.style.display =
+        "block";
+}
+
+
+function clearError() {
+
+    errorContainer.textContent = "";
+
+    errorContainer.style.display =
+        "none";
+}
+
+
+/*
+============================================================
+AUTHORIZATION
+============================================================
+*/
+
+async function verifyStaffAccess() {
+
+    const {
+        data: {
+            session
+        }
+    } =
+        await supabase.auth.getSession();
+
+
+    if (!session) {
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+
+    const {
+        data: profile,
+        error
+    } =
+        await supabase
+            .from("profiles")
+            .select(
+                "full_name, role"
+            )
+            .eq(
+                "id",
+                session.user.id
+            )
+            .single();
+
+
+    if (
+        error ||
+        !profile
+    ) {
+
+        await supabase.auth.signOut();
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+
+    if (
+        profile.role !== "staff" &&
+        profile.role !== "manager"
+    ) {
+
+        await supabase.auth.signOut();
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+
+    roleDisplay.textContent =
+        `Role: ${profile.role}`;
+
+
+    return profile;
+}
+
+
+/*
+============================================================
+FETCH ACTIVE ORDERS
+============================================================
+*/
+
+async function loadOrders() {
+
+    clearError();
+
+
+    const {
+        data: orders,
+        error
+    } =
+        await supabase
+            .from("orders")
+            .select(`
+                id,
+                order_number,
+                customer_name,
+                phone,
+                order_type,
+                delivery_address,
+                preferred_time,
+                special_instructions,
+                subtotal,
+                delivery_fee,
+                total_amount,
+                payment_method,
+                payment_status,
+                status,
+                created_at,
+                order_items (
+                    id,
+                    item_name,
+                    unit_price,
+                    quantity,
+                    subtotal
+                )
+            `)
+            .in(
+                "status",
+                ACTIVE_STATUSES
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        showError(
+            `Failed to load orders: ${error.message}`
+        );
+
+        return;
+    }
+
+
+    renderOrders(
+        orders || []
+    );
+}
+
+
+/*
+============================================================
+RENDER ORDERS
+============================================================
+*/
+
+function renderOrders(
+    orders
+) {
+
+    if (!orders.length) {
+
+        ordersContainer.innerHTML = `
+            <div class="empty-state">
+                <h3>No active orders</h3>
+                <p>
+                    New customer orders will appear here automatically.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    ordersContainer.innerHTML =
+        orders
+            .map(
+                order =>
+                    createOrderCard(order)
+            )
+            .join("");
+
+
+    attachOrderActions();
+}
+
+
+/*
+============================================================
+ORDER CARD
+============================================================
+*/
+
+function createOrderCard(
+    order
+) {
+
+    const createdAt =
+        new Date(
+            order.created_at
+        ).toLocaleString();
+
+
+    const nextAction =
+        getNextAction(
+            order.status,
+            order.order_type
+        );
+
+
+    const items =
+        order.order_items
+            ?.map(
+                item => `
+                    <li>
+                        <span>
+                            ${escapeHtml(item.item_name)}
+                            × ${item.quantity}
+                        </span>
+
+                        <strong>
+                            ₵${Number(item.subtotal).toFixed(2)}
+                        </strong>
+                    </li>
+                `
+            )
+            .join("") || "";
+
+
+    const deliveryInfo =
+        order.order_type === "delivery"
+            ? `
+                <p>
+                    <strong>Delivery:</strong>
+                    ${escapeHtml(
+                        order.delivery_address || ""
+                    )}
+                </p>
+            `
+            : `
+                <p>
+                    <strong>Pickup order</strong>
+                </p>
+            `;
+
+
+    const specialInstructions =
+        order.special_instructions
+            ? `
+                <div class="special-instructions">
+                    <strong>
+                        Special instructions:
+                    </strong>
+
+                    <div>
+                        ${escapeHtml(
+                            order.special_instructions
+                        )}
+                    </div>
+                </div>
+            `
+            : "";
+
+
+    return `
+        <article
+            class="order-card ${order.status}"
+            data-order-id="${order.id}"
+        >
+
+            <div class="order-header">
+
+                <div>
+                    <h3 class="order-number">
+                        Order #${order.order_number}
+                    </h3>
+
+                    <div class="order-meta">
+                        ${createdAt}
+                    </div>
+                </div>
+
+                <span
+                    class="
+                        status-badge
+                        status-${order.status}
+                    "
+                >
+                    ${formatStatus(order.status)}
+                </span>
+
+            </div>
+
+
+            <div class="order-meta">
+
+                <p>
+                    <strong>Customer:</strong>
+                    ${escapeHtml(order.customer_name)}
+                </p>
+
+                <p>
+                    <strong>Phone:</strong>
+                    ${escapeHtml(order.phone)}
+                </p>
+
+                <p>
+                    <strong>Payment:</strong>
+                    ${formatStatus(order.payment_status)}
+                    (${escapeHtml(order.payment_method)})
+                </p>
+
+                ${deliveryInfo}
+
+            </div>
+
+
+            <ul class="order-items">
+
+                ${items}
+
+            </ul>
+
+
+            ${specialInstructions}
+
+
+            <div class="order-meta">
+
+                <p>
+                    <strong>Subtotal:</strong>
+                    ₵${Number(order.subtotal).toFixed(2)}
+                </p>
+
+                <p>
+                    <strong>Delivery:</strong>
+                    ₵${Number(order.delivery_fee).toFixed(2)}
+                </p>
+
+                <p>
+                    <strong>Total:</strong>
+                    ₵${Number(order.total_amount).toFixed(2)}
+                </p>
+
+            </div>
+
+
+            <div class="order-actions">
+
+                ${
+                    nextAction
+                        ? `
+                            <button
+                                class="order-action-btn"
+                                data-order-id="${order.id}"
+                                data-next-status="${nextAction.status}"
+                            >
+                                ${nextAction.label}
+                            </button>
+                        `
+                        : ""
+                }
+
+            </div>
+
+        </article>
+    `;
+}
+
+
+/*
+============================================================
+NEXT WORKFLOW ACTION
+============================================================
+*/
+
+function getNextAction(
+    status,
+    orderType
+) {
+
+    switch (status) {
+
+        case "pending":
+            return {
+                status: "confirmed",
+                label: "Confirm Order"
+            };
+
+
+        case "confirmed":
+            return {
+                status: "preparing",
+                label: "Start Preparing"
+            };
+
+
+        case "preparing":
+            return {
+                status: "ready",
+                label: "Mark Ready"
+            };
+
+
+        case "ready":
+
+            if (
+                orderType === "delivery"
+            ) {
+
+                return {
+                    status: "out_for_delivery",
+                    label: "Send for Delivery"
+                };
+
+            }
+
+
+            return {
+                status: "completed",
+                label: "Complete Pickup"
+            };
+
+
+        case "out_for_delivery":
+            return {
+                status: "completed",
+                label: "Mark Delivered"
+            };
+
+
+        default:
+            return null;
+    }
+}
+
+
+/*
+============================================================
+STATUS UPDATE
+============================================================
+*/
+
+function attachOrderActions() {
+
+    document
+        .querySelectorAll(
+            ".order-action-btn"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async () => {
+
+                        const orderId =
+                            button.dataset.orderId;
+
+                        const newStatus =
+                            button.dataset.nextStatus;
+
+
+                        button.disabled =
+                            true;
+
+                        button.textContent =
+                            "Updating...";
+
+
+                        const {
+                            error
+                        } =
+                            await supabase.rpc(
+                                "update_order_status",
+                                {
+                                    p_order_id:
+                                        orderId,
+
+                                    p_new_status:
+                                        newStatus
+                                }
+                            );
+
+
+                        if (error) {
+
+                            showError(
+                                `Could not update order: ${error.message}`
+                            );
+
+                            button.disabled =
+                                false;
+
+                            button.textContent =
+                                "Try Again";
+
+                            return;
+                        }
+
+
+                        /*
+                        ------------------------------------------------
+                        Realtime will normally refresh the UI.
+                        We also reload immediately so the UI doesn't
+                        depend exclusively on the websocket event.
+                        ------------------------------------------------
+                        */
+
+                        await loadOrders();
+
+                    }
+                );
+
+            }
+        );
+}
+
+
+/*
+============================================================
+REALTIME
+============================================================
+*/
+
+function subscribeToOrderChanges() {
+
+    realtimeChannel =
+        supabase
+            .channel(
+                "juljones-kitchen-orders"
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "orders"
+                },
+                payload => {
+
+                    console.log(
+                        "Realtime order event:",
+                        payload
+                    );
+
+                    loadOrders();
+
+                }
+            )
+            .subscribe(
+                status => {
+
+                    if (
+                        status === "SUBSCRIBED"
+                    ) {
+
+                        connectionStatus.textContent =
+                            "Live updates connected ✅";
+
+                    } else {
+
+                        connectionStatus.textContent =
+                            `Realtime: ${status}`;
+
+                    }
+
+                }
+            );
+}
+
+
+/*
+============================================================
+UTILITY
+============================================================
+*/
+
+function formatStatus(
+    status
+) {
+
+    return status
+        .replaceAll("_", " ")
+        .replace(
+            /\b\w/g,
+            letter =>
+                letter.toUpperCase()
+        );
+}
+
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/*
+============================================================
+NAVIGATION
+============================================================
+*/
+
+document
+    .getElementById(
+        "logout"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            await supabase.auth.signOut();
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "backToDashboard"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "dashboard.html";
+
+        }
+    );
+
+
+/*
+============================================================
+START
+============================================================
+*/
+
+const profile =
+    await verifyStaffAccess();
+
+
+if (profile) {
+
+    await loadOrders();
+
+    subscribeToOrderChanges();
+
+}

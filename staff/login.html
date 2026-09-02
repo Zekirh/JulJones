@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JulJones Staff Login</title>
+
+    <link rel="stylesheet" href="staff.css">
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <section class="login-card">
+
+            <h1>JulJones</h1>
+
+            <p class="subtitle">
+                Staff & Management Portal
+            </p>
+
+            <form id="loginForm">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="staff@juljones.com"
+                    autocomplete="username"
+                    required
+                >
+
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                    required
+                >
+
+
+                <button type="submit">
+                    Sign In
+                </button>
+
+            </form>
+
+            <p
+                id="message"
+                class="message"
+            ></p>
+
+        </section>
+
+    </main>
+
+
+    <script type="module">
+
+        import {
+            createClient
+        } from "https://esm.sh/@supabase/supabase-js@2";
+
+
+        /*
+        ============================================================
+        SUPABASE CONFIG
+        ============================================================
+        */
+
+       const SUPABASE_URL = "https://ojvcwtjcbszenatgeyco.supabase.co";
+const SUPABASE_KEY = "sb_publishable_InK1Q2kRf9Dsfo9vTTAEYw_p_RrP4gk";
+
+
+        const supabase =
+            createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        const form =
+            document.getElementById("loginForm");
+
+        const message =
+            document.getElementById("message");
+
+
+        /*
+        ============================================================
+        LOGIN
+        ============================================================
+        */
+
+        form.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+                message.textContent =
+                    "Signing in...";
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase.auth
+                        .signInWithPassword({
+                            email,
+                            password
+                        });
+
+
+                if (error) {
+
+                    message.textContent =
+                        error.message;
+
+                    return;
+                }
+
+
+                /*
+                ----------------------------------------------------
+                Verify the user's application role.
+                ----------------------------------------------------
+                */
+
+                const {
+                    data: profile,
+                    error: profileError
+                } =
+                    await supabase
+                        .from("profiles")
+                        .select("role")
+                        .eq("id", data.user.id)
+                        .single();
+
+
+                if (profileError) {
+
+                    await supabase.auth.signOut();
+
+                    message.textContent =
+                        "Unable to verify staff permissions.";
+
+                    return;
+                }
+
+
+                /*
+                ----------------------------------------------------
+                Block customers.
+                ----------------------------------------------------
+                */
+
+                if (
+                    profile.role !== "staff" &&
+                    profile.role !== "manager"
+                ) {
+
+                    await supabase.auth.signOut();
+
+                    message.textContent =
+                        "Access denied. Staff credentials required.";
+
+                    return;
+                }
+
+
+                /*
+                ----------------------------------------------------
+                Staff login successful.
+                ----------------------------------------------------
+                */
+
+                window.location.href =
+                    "dashboard.html";
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
