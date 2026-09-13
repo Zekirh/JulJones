@@ -9,9 +9,11 @@ SUPABASE
 ============================================================
 */
 
-const SUPABASE_URL = "https://ojvcwtjcbszenatgeyco.supabase.co";
-const SUPABASE_KEY = "sb_publishable_InK1Q2kRf9Dsfo9vTTAEYw_p_RrP4gk";
+const SUPABASE_URL =
+    "https://ojvcwtjcbszenatgeyco.supabase.co";
 
+const SUPABASE_KEY =
+    "sb_publishable_InK1Q2kRf9Dsfo9vTTAEYw_p_RrP4gk";
 
 const supabase =
     createClient(
@@ -61,8 +63,13 @@ const ACTIVE_STATUSES = [
     "out_for_delivery"
 ];
 
-
 let realtimeChannel = null;
+
+let currentProfile = null;
+
+let currentBranchId = null;
+
+let currentBranchName = null;
 
 
 /*
@@ -95,7 +102,7 @@ function clearError() {
 
 /*
 ============================================================
-AUTHORIZATION
+AUTHORIZATION + BRANCH IDENTITY
 ============================================================
 */
 
@@ -124,9 +131,17 @@ async function verifyStaffAccess() {
     } =
         await supabase
             .from("profiles")
-            .select(
-                "full_name, role"
-            )
+            .select(`
+                full_name,
+                role,
+                branch_id,
+                branches (
+                    id,
+                    name,
+                    code,
+                    address
+                )
+            `)
             .eq(
                 "id",
                 session.user.id
@@ -138,6 +153,11 @@ async function verifyStaffAccess() {
         error ||
         !profile
     ) {
+
+        console.error(
+            "Failed to load staff profile:",
+            error
+        );
 
         await supabase.auth.signOut();
 
@@ -162,8 +182,59 @@ async function verifyStaffAccess() {
     }
 
 
-    roleDisplay.textContent =
-        `Role: ${profile.role}`;
+    /*
+    ----------------------------------------------------------
+    Staff must belong to a branch.
+    ----------------------------------------------------------
+    */
+
+    if (
+        profile.role === "staff" &&
+        !profile.branch_id
+    ) {
+
+        showError(
+            "Your staff account has not been assigned to a JulJones branch. Please contact a manager."
+        );
+
+        return null;
+    }
+
+
+    currentProfile =
+        profile;
+
+
+    currentBranchId =
+        profile.branch_id || null;
+
+
+    currentBranchName =
+        profile.branches?.name || null;
+
+
+    /*
+    ----------------------------------------------------------
+    Display branch identity
+    ----------------------------------------------------------
+    */
+
+    if (
+        profile.role === "manager"
+    ) {
+
+        roleDisplay.textContent =
+            "Role: Manager — All Branches";
+
+    } else {
+
+        const branchLabel =
+            currentBranchName ||
+            "Unassigned Branch";
+
+        roleDisplay.textContent =
+            `Role: Staff — ${branchLabel}`;
+    }
 
 
     return profile;
@@ -181,11 +252,8 @@ async function loadOrders() {
     clearError();
 
 
-    const {
-        data: orders,
-        error
-    } =
-        await supabase
+    let query =
+        supabase
             .from("orders")
             .select(`
                 id,
@@ -202,6 +270,7 @@ async function loadOrders() {
                 payment_method,
                 payment_status,
                 status,
+                branch_id,
                 created_at,
                 order_items (
                     id,
@@ -223,7 +292,42 @@ async function loadOrders() {
             );
 
 
+    /*
+    ----------------------------------------------------------
+    Branch isolation
+    ----------------------------------------------------------
+
+    Staff users are explicitly restricted to their branch.
+
+    Managers remain global and can see all branches.
+    RLS remains the authoritative security boundary.
+    */
+
+    if (
+        currentProfile?.role === "staff"
+    ) {
+
+        query =
+            query.eq(
+                "branch_id",
+                currentBranchId
+            );
+    }
+
+
+    const {
+        data: orders,
+        error
+    } =
+        await query;
+
+
     if (error) {
+
+        console.error(
+            "Failed to load orders:",
+            error
+        );
 
         showError(
             `Failed to load orders: ${error.message}`
@@ -253,10 +357,13 @@ function renderOrders(
 
         ordersContainer.innerHTML = `
             <div class="empty-state">
+
                 <h3>No active orders</h3>
+
                 <p>
                     New customer orders will appear here automatically.
                 </p>
+
             </div>
         `;
 
@@ -305,6 +412,7 @@ function createOrderCard(
             ?.map(
                 item => `
                     <li>
+
                         <span>
                             ${escapeHtml(item.item_name)}
                             × ${item.quantity}
@@ -313,6 +421,7 @@ function createOrderCard(
                         <strong>
                             ₵${Number(item.subtotal).toFixed(2)}
                         </strong>
+
                     </li>
                 `
             )
@@ -321,6 +430,7 @@ function createOrderCard(
 
     const deliveryInfo =
         order.order_type === "delivery"
+
             ? `
                 <p>
                     <strong>Delivery:</strong>
@@ -329,6 +439,7 @@ function createOrderCard(
                     )}
                 </p>
             `
+
             : `
                 <p>
                     <strong>Pickup order</strong>
@@ -338,8 +449,10 @@ function createOrderCard(
 
     const specialInstructions =
         order.special_instructions
+
             ? `
                 <div class="special-instructions">
+
                     <strong>
                         Special instructions:
                     </strong>
@@ -349,8 +462,10 @@ function createOrderCard(
                             order.special_instructions
                         )}
                     </div>
+
                 </div>
             `
+
             : "";
 
 
@@ -363,6 +478,7 @@ function createOrderCard(
             <div class="order-header">
 
                 <div>
+
                     <h3 class="order-number">
                         Order #${order.order_number}
                     </h3>
@@ -370,6 +486,7 @@ function createOrderCard(
                     <div class="order-meta">
                         ${createdAt}
                     </div>
+
                 </div>
 
                 <span
@@ -474,6 +591,7 @@ function getNextAction(
     switch (status) {
 
         case "pending":
+
             return {
                 status: "confirmed",
                 label: "Confirm Order"
@@ -481,6 +599,7 @@ function getNextAction(
 
 
         case "confirmed":
+
             return {
                 status: "preparing",
                 label: "Start Preparing"
@@ -488,6 +607,7 @@ function getNextAction(
 
 
         case "preparing":
+
             return {
                 status: "ready",
                 label: "Mark Ready"
@@ -515,6 +635,7 @@ function getNextAction(
 
 
         case "out_for_delivery":
+
             return {
                 status: "completed",
                 label: "Mark Delivered"
@@ -522,6 +643,7 @@ function getNextAction(
 
 
         default:
+
             return null;
     }
 }
@@ -577,6 +699,11 @@ function attachOrderActions() {
 
                         if (error) {
 
+                            console.error(
+                                "Order status update failed:",
+                                error
+                            );
+
                             showError(
                                 `Could not update order: ${error.message}`
                             );
@@ -594,8 +721,7 @@ function attachOrderActions() {
                         /*
                         ------------------------------------------------
                         Realtime will normally refresh the UI.
-                        We also reload immediately so the UI doesn't
-                        depend exclusively on the websocket event.
+                        We also reload immediately.
                         ------------------------------------------------
                         */
 
@@ -617,18 +743,58 @@ REALTIME
 
 function subscribeToOrderChanges() {
 
+    /*
+    ----------------------------------------------------------
+    Clean up an existing subscription first.
+    ----------------------------------------------------------
+    */
+
+    if (realtimeChannel) {
+
+        supabase
+            .removeChannel(
+                realtimeChannel
+            );
+
+        realtimeChannel =
+            null;
+    }
+
+
+    const realtimeConfig = {
+        event: "*",
+        schema: "public",
+        table: "orders"
+    };
+
+
+    /*
+    ----------------------------------------------------------
+    Explicit branch filter for staff.
+    
+    Managers receive all branch events.
+    ----------------------------------------------------------
+    */
+
+    if (
+        currentProfile?.role === "staff"
+    ) {
+
+        realtimeConfig.filter =
+            `branch_id=eq.${currentBranchId}`;
+    }
+
+
     realtimeChannel =
         supabase
             .channel(
-                "juljones-kitchen-orders"
+                currentProfile?.role === "staff"
+                    ? `juljones-kitchen-${currentBranchId}`
+                    : "juljones-manager-orders"
             )
             .on(
                 "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "orders"
-                },
+                realtimeConfig,
                 payload => {
 
                     console.log(
@@ -648,7 +814,9 @@ function subscribeToOrderChanges() {
                     ) {
 
                         connectionStatus.textContent =
-                            "Live updates connected ✅";
+                            currentProfile?.role === "staff"
+                                ? `Live updates connected ✅ — ${currentBranchName}`
+                                : "Live updates connected ✅ — All Branches";
 
                     } else {
 
@@ -672,7 +840,7 @@ function formatStatus(
     status
 ) {
 
-    return status
+    return String(status || "")
         .replaceAll("_", " ")
         .replace(
             /\b\w/g,
@@ -710,6 +878,16 @@ document
     .addEventListener(
         "click",
         async () => {
+
+            if (realtimeChannel) {
+
+                await supabase.removeChannel(
+                    realtimeChannel
+                );
+
+                realtimeChannel =
+                    null;
+            }
 
             await supabase.auth.signOut();
 

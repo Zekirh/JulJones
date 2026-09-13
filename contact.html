@@ -1,214 +1,715 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Order Now - JulJones</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet"
+    >
+
 </head>
+
+
 <body>
+
     <!-- Navigation -->
+
     <nav class="navbar">
+
         <div class="container">
+
             <div class="nav-wrapper">
+
                 <div class="logo">
+
                     <h1>JulJones</h1>
-                    <span class="tagline">Authentic Ghanaian Cuisine</span>
+
+                    <span class="tagline">
+                        Authentic Ghanaian Cuisine
+                    </span>
+
                 </div>
+
+
                 <ul class="nav-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="menu.html">Menu</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html" class="active">Order Now</a></li>
+
+                    <li>
+                        <a href="index.html">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="menu.html">
+                            Menu
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="about.html">
+                            About
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            href="contact.html"
+                            class="active"
+                        >
+                            Order Now
+                        </a>
+                    </li>
+
                 </ul>
+
+
                 <div class="hamburger">
+
                     <span></span>
                     <span></span>
                     <span></span>
+
                 </div>
+
             </div>
+
         </div>
+
     </nav>
 
+
     <!-- Page Header -->
+
     <section class="page-header">
+
         <div class="page-header-content">
+
             <h1>Place Your Order</h1>
-            <p>Fill out the form below and we'll get your delicious meal ready</p>
+
+            <p>
+                Choose your JulJones kitchen
+                and place your order.
+            </p>
+
         </div>
+
     </section>
 
-    <!-- Contact/Order Section -->
+
+    <!-- Checkout -->
+
     <section class="contact-section">
+
         <div class="container">
+
             <div class="contact-wrapper">
+
+
+                <!-- ===========================
+                     ORDER FORM
+                ============================ -->
+
                 <div class="contact-form-container">
-                    <h2>Order Form</h2>
-                    <form class="order-form" id="orderForm">
+
+                    <h2>
+                        Checkout
+                    </h2>
+
+
+                    <form
+                        class="order-form"
+                        id="orderForm"
+                        novalidate
+                    >
+
+
+                        <!-- Customer -->
+
                         <div class="form-group">
-                            <label for="name">Full Name *</label>
-                            <input type="text" id="name" name="name" required placeholder="Enter your full name">
+
+                            <label for="name">
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                required
+                                autocomplete="name"
+                                placeholder="Enter your full name"
+                            >
+
                         </div>
+
 
                         <div class="form-row">
+
                             <div class="form-group">
-                                <label for="phone">Phone Number *</label>
-                                <input type="tel" id="phone" name="phone" required placeholder="+233 XX XXX XXXX">
+
+                                <label for="phone">
+                                    Phone Number *
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    required
+                                    autocomplete="tel"
+                                    placeholder="+233 XX XXX XXXX"
+                                >
+
                             </div>
+
+
                             <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" id="email" name="email" placeholder="your.email@example.com">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    autocomplete="email"
+                                    placeholder="your.email@example.com"
+                                >
+
                             </div>
+
                         </div>
 
-                        <div class="form-group">
-                            <label for="dish">Select Dish *</label>
-                            <select id="dish" name="dish" required>
-                                <option value="">Choose a dish...</option>
-                                <optgroup label="Rice Dishes">
-                                    <option value="jollof-rice">Jollof Rice - ₵25</option>
-                                    <option value="fried-rice">Fried Rice - ₵28</option>
-                                    <option value="waakye">Waakye - ₵22</option>
-                                    <option value="omotuo">Omotuo (Rice Balls) - ₵20</option>
-                                </optgroup>
-                                <optgroup label="Stews & Soups">
-                                    <option value="yam">Yam - ₵20</option>
-                                    <option value="fufu-light-soup">Fufu & Light Soup - ₵25</option>
-                                    <option value="groundnut-soup">Groundnut Soup - ₵28</option>
-                                </optgroup>
-                                <optgroup label="Snacks">
-                                    <option value="kelewele">Kelewele - ₵15</option>
-                                </optgroup>
-                                <optgroup label="Beverages">
-                                    <option value="sobolo">Sobolo - ₵8</option>
-                                    <option value="fresh-juice">Fresh Fruit Juice - ₵10</option>
-                                </optgroup>
+
+                        <!-- Cart summary -->
+
+                        <div
+                            id="cartSummary"
+                            class="cart-order-summary"
+                            hidden
+                        ></div>
+
+
+                        <!-- Direct order -->
+
+                        <div
+                            class="form-group"
+                            id="dishGroup"
+                        >
+
+                            <label for="dish">
+                                Select Dish *
+                            </label>
+
+                            <select
+                                id="dish"
+                                name="dish"
+                                required
+                            >
+                                <option value="">
+                                    Loading menu...
+                                </option>
                             </select>
+
                         </div>
 
-                        <div class="form-group">
-                            <label for="quantity">Quantity *</label>
-                            <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+                        <div
+                            class="form-group"
+                            id="quantityGroup"
+                        >
+
+                            <label for="quantity">
+                                Quantity *
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                min="1"
+                                max="50"
+                                value="1"
+                                required
+                                inputmode="numeric"
+                            >
+
+                            <small class="field-help">
+                                Maximum 50 per menu item.
+                            </small>
+
                         </div>
 
+
+                        <!-- Branch -->
+
                         <div class="form-group">
-                            <label for="delivery">Delivery Option *</label>
-                            <select id="delivery" name="delivery" required>
-                                <option value="">Select option...</option>
-                                <option value="pickup">Pickup at Restaurant</option>
-                                <option value="delivery">Home Delivery</option>
+
+                            <label for="branch">
+                                JulJones Kitchen *
+                            </label>
+
+                            <select
+                                id="branch"
+                                name="branch_id"
+                                required
+                                disabled
+                            >
+
+                                <option value="">
+                                    Loading kitchens...
+                                </option>
+
                             </select>
+
+                            <small class="field-help">
+                                Select the JulJones Kitchen
+                                that should prepare your order.
+                            </small>
+
                         </div>
 
-                        <div class="form-group" id="addressGroup" style="display: none;">
-                            <label for="address">Delivery Address *</label>
-                            <textarea id="address" name="address" rows="3" placeholder="Enter your full delivery address"></textarea>
-                        </div>
+
+                        <!-- Delivery -->
 
                         <div class="form-group">
-                            <label for="special">Special Instructions</label>
-                            <textarea id="special" name="special" rows="3" placeholder="Any special requests or dietary requirements?"></textarea>
+
+                            <label for="delivery">
+                                Delivery Option *
+                            </label>
+
+                            <select
+                                id="delivery"
+                                name="delivery"
+                                required
+                            >
+
+                                <option value="">
+                                    Select option...
+                                </option>
+
+                                <option value="pickup">
+                                    Pickup at Restaurant
+                                </option>
+
+                                <option value="delivery">
+                                    Home Delivery
+                                </option>
+
+                            </select>
+
                         </div>
+
+
+                        <!-- Address -->
+
+                        <div
+                            class="form-group"
+                            id="addressGroup"
+                            hidden
+                        >
+
+                            <label for="address">
+                                Delivery Address *
+                            </label>
+
+                            <textarea
+                                id="address"
+                                name="address"
+                                rows="3"
+                                placeholder="Enter your full delivery address"
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- Instructions -->
 
                         <div class="form-group">
-                            <label for="preferred-time">Preferred Time</label>
-                            <input type="datetime-local" id="preferred-time" name="preferred-time">
+
+                            <label for="special">
+                                Special Instructions
+                            </label>
+
+                            <textarea
+                                id="special"
+                                name="special"
+                                rows="3"
+                                placeholder="Any special requests or dietary requirements?"
+                            ></textarea>
+
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-large">Place Order</button>
+
+                        <!-- Preferred time -->
+
+                        <div class="form-group">
+
+                            <label for="preferred-time">
+                                Preferred Time
+                            </label>
+
+                            <input
+                                type="datetime-local"
+                                id="preferred-time"
+                                name="preferred-time"
+                            >
+
+                        </div>
+
+
+                        <!-- Payment -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Payment Method
+                            </label>
+
+                            <div class="payment-method-display">
+
+                                <strong>
+                                    Cash
+                                </strong>
+
+                                <span>
+                                    Cash payment is currently
+                                    available for pickup and delivery.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Submit -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-large"
+                        >
+                            Place Order
+                        </button>
+
+
+                        <p class="checkout-security-note">
+                            Your order total and menu prices
+                            are calculated securely by JulJones
+                            when your order is submitted.
+                        </p>
+
                     </form>
+
                 </div>
+
+
+                <!-- ===========================
+                     INFORMATION
+                ============================ -->
 
                 <div class="contact-info">
-                    <div class="info-card">
-                        <h3>Contact Information</h3>
-                        <div class="info-item">
-                            <div class="info-icon">📍</div>
-                            <div>
-                                <h4>Address</h4>
-                                <p>Accra, Ghana</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon">📞</div>
-                            <div>
-                                <h4>Phone</h4>
-                                <p>+233 XX XXX XXXX</p>
-                                <p>+233 XX XXX XXXX</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon">✉️</div>
-                            <div>
-                                <h4>Email</h4>
-                                <p>info@juljones.com</p>
-                                <p>orders@juljones.com</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon">🕐</div>
-                            <div>
-                                <h4>Opening Hours</h4>
-                                <p>Monday - Saturday: 8:00 AM - 10:00 PM</p>
-                                <p>Sunday: 10:00 AM - 8:00 PM</p>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="info-card">
-                        <h3>Delivery Information</h3>
-                        <ul class="delivery-info">
-                            <li>✅ Free delivery for orders above ₵50</li>
-                            <li>✅ Delivery within 30-45 minutes</li>
-                            <li>✅ Cash on delivery available</li>
-                            <li>✅ Mobile money payments accepted</li>
-                        </ul>
+
+                        <h3>
+                            Contact Information
+                        </h3>
+
+
+                        <div class="info-item">
+
+                            <div class="info-icon">
+                                📍
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Address
+                                </h4>
+
+                                <p>
+                                    Accra, Ghana
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <div class="info-icon">
+                                📞
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Phone
+                                </h4>
+
+                                <p>
+                                    +233 XX XXX XXXX
+                                </p>
+
+                                <p>
+                                    +233 XX XXX XXXX
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <div class="info-icon">
+                                ✉️
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Email
+                                </h4>
+
+                                <p>
+                                    info@juljones.com
+                                </p>
+
+                                <p>
+                                    orders@juljones.com
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <div class="info-icon">
+                                🕐
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Opening Hours
+                                </h4>
+
+                                <p>
+                                    Monday - Saturday:
+                                    8:00 AM - 10:00 PM
+                                </p>
+
+                                <p>
+                                    Sunday:
+                                    10:00 AM - 8:00 PM
+                                </p>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
+
+                    <div class="info-card">
+
+                        <h3>
+                            Delivery Information
+                        </h3>
+
+                        <ul class="delivery-info">
+
+                            <li>
+                                ✅ Free delivery for orders above ₵50
+                            </li>
+
+                            <li>
+                                ✅ Delivery within 30-45 minutes
+                            </li>
+
+                            <li>
+                                ✅ Cash payment available
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>JulJones</h3>
-                    <p>Bringing authentic Ghanaian cuisine to your table since day one.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="menu.html">Menu</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <p>📍 Accra, Ghana</p>
-                    <p>📞 +233 XX XXX XXXX</p>
-                    <p>✉️ info@juljones.com</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Opening Hours</h4>
-                    <p>Mon - Sat: 8:00 AM - 10:00 PM</p>
-                    <p>Sunday: 10:00 AM - 8:00 PM</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 JulJones. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    <script src="script.js"></script>
-    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
-</body>
-</html>
 
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+
+                <div class="footer-section">
+
+                    <h3>
+                        JulJones
+                    </h3>
+
+                    <p>
+                        Bringing authentic Ghanaian
+                        cuisine to your table since day one.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-section">
+
+                    <h4>
+                        Quick Links
+                    </h4>
+
+                    <ul>
+
+                        <li>
+                            <a href="index.html">
+                                Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="menu.html">
+                                Menu
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="about.html">
+                                About Us
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="contact.html">
+                                Order Now
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="footer-section">
+
+                    <h4>
+                        Contact Info
+                    </h4>
+
+                    <p>
+                        📍 Accra, Ghana
+                    </p>
+
+                    <p>
+                        📞 +233 XX XXX XXXX
+                    </p>
+
+                    <p>
+                        ✉️ info@juljones.com
+                    </p>
+
+                </div>
+
+
+                <div class="footer-section">
+
+                    <h4>
+                        Opening Hours
+                    </h4>
+
+                    <p>
+                        Mon - Sat:
+                        8:00 AM - 10:00 PM
+                    </p>
+
+                    <p>
+                        Sunday:
+                        10:00 AM - 8:00 PM
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    &copy; 2026 JulJones.
+                    All rights reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script
+        type="module"
+        src="script.js"
+    ></script>
+
+
+    <button
+        type="button"
+        class="back-to-top"
+        id="backToTop"
+        aria-label="Back to top"
+    >
+        &#8593;
+    </button>
+
+</body>
+
+</html>

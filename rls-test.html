@@ -54,6 +54,11 @@
 
     <div class="controls">
 
+        <button id="testOrderCreation">
+         Test Customer Order Creation
+        </button>
+
+
         <button id="testStatus">
          Test Order Status Update
         </button>
@@ -590,6 +595,93 @@ document
         log(
             `New status: ${data.status}`
         );
+    });
+
+document
+    .getElementById("testOrderCreation")
+    .addEventListener("click", async () => {
+
+        const menuItemId = prompt(
+            "Enter the Order Pipeline Test Jollof UUID:"
+        );
+
+        if (!menuItemId) {
+            return;
+        }
+
+        const {
+            data,
+            error
+        } = await supabase.rpc(
+            "create_customer_order",
+            {
+                p_customer_name: "Anonymous Test Customer",
+
+                p_phone: "0000000000",
+
+                p_email: "test@example.com",
+
+                p_order_type: "pickup",
+
+                p_delivery_address: null,
+
+                p_preferred_time: "12:00",
+
+                p_special_instructions:
+                    "RLS/order pipeline test",
+
+                p_payment_method: "cash",
+
+                p_items: [
+                    {
+                        menu_item_id: menuItemId,
+                        quantity: 2
+                    }
+                ]
+            }
+        );
+
+
+        if (error) {
+
+            log(
+                `ORDER CREATION FAILED ❌\n${error.message}`
+            );
+
+            return;
+        }
+
+
+        log(
+            "ORDER CREATED SUCCESSFULLY ✅"
+        );
+
+        log("");
+
+        log(
+            `Order ID: ${data.id}`
+        );
+
+        log(
+            `Order Number: ${data.order_number}`
+        );
+
+        log(
+            `Subtotal: GHS ${data.subtotal}`
+        );
+
+        log(
+            `Delivery Fee: GHS ${data.delivery_fee}`
+        );
+
+        log(
+            `Total: GHS ${data.total_amount}`
+        );
+
+        log(
+            `Status: ${data.status}`
+        );
+
     });
 
 
