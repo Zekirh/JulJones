@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://juljones.netlify.app/sitemap.xml
