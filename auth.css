@@ -1,0 +1,350 @@
+/* =========================================
+   JULJONES AUTHENTICATION UI
+========================================= */
+
+:root {
+    --auth-bg: #f7f4ef;
+    --auth-card: #ffffff;
+    --auth-text: #1f1f1f;
+    --auth-muted: #707070;
+    --auth-border: #dedbd5;
+    --auth-accent: #b45309;
+    --auth-accent-dark: #923f07;
+    --auth-error: #b42318;
+    --auth-success: #18794e;
+    --auth-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.auth-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 18px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(180, 83, 9, 0.10),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(120, 53, 15, 0.08),
+            transparent 35%
+        ),
+        var(--auth-bg);
+
+    color: var(--auth-text);
+}
+
+
+/* =========================================
+   AUTH CONTAINER
+========================================= */
+
+.auth-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.auth-brand {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.auth-brand a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.auth-brand-name {
+    margin: 0;
+
+    font-size: 1.8rem;
+    font-weight: 900;
+
+    letter-spacing: 0.08em;
+}
+
+.auth-brand-tagline {
+    margin: 6px 0 0;
+
+    color: var(--auth-muted);
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.auth-card {
+    background: var(--auth-card);
+
+    border: 1px solid rgba(0, 0, 0, 0.06);
+
+    border-radius: 20px;
+
+    padding: 34px;
+
+    box-shadow: var(--auth-shadow);
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.auth-heading {
+    margin-bottom: 28px;
+}
+
+.auth-heading h1 {
+    margin: 0 0 8px;
+
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+.auth-heading p {
+    margin: 0;
+
+    color: var(--auth-muted);
+
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.auth-form {
+    display: grid;
+    gap: 18px;
+}
+
+.form-field {
+    display: grid;
+    gap: 7px;
+}
+
+.form-field label {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.form-field input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 13px 14px;
+
+    border: 1px solid var(--auth-border);
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: var(--auth-text);
+
+    font: inherit;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-field input::placeholder {
+    color: #aaa;
+}
+
+.form-field input:focus {
+    border-color: var(--auth-accent);
+
+    box-shadow:
+        0 0 0 4px rgba(180, 83, 9, 0.10);
+}
+
+
+/* =========================================
+   PASSWORD FIELD
+========================================= */
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 52px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 8px;
+
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+
+    padding: 8px;
+
+    color: #777;
+
+    cursor: pointer;
+
+    font-size: 0.85rem;
+}
+
+.password-toggle:hover {
+    color: var(--auth-text);
+}
+
+
+/* =========================================
+   PRIMARY BUTTON
+========================================= */
+
+.auth-button {
+    width: 100%;
+
+    margin-top: 4px;
+
+    padding: 14px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: var(--auth-accent);
+    color: #fff;
+
+    font: inherit;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        opacity 0.2s ease;
+}
+
+.auth-button:hover {
+    background: var(--auth-accent-dark);
+}
+
+.auth-button:active {
+    transform: translateY(1px);
+}
+
+.auth-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.auth-message {
+    min-height: 20px;
+
+    margin: 0;
+
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.auth-message.error {
+    color: var(--auth-error);
+}
+
+.auth-message.success {
+    color: var(--auth-success);
+}
+
+
+/* =========================================
+   SECONDARY LINKS
+========================================= */
+
+.auth-footer {
+    margin-top: 24px;
+
+    text-align: center;
+
+    color: var(--auth-muted);
+
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.auth-footer a {
+    color: var(--auth-accent);
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.auth-guest {
+    display: inline-block;
+
+    margin-top: 8px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .auth-page {
+        align-items: flex-start;
+
+        padding: 24px 14px;
+    }
+
+    .auth-card {
+        padding: 25px 20px;
+
+        border-radius: 16px;
+    }
+
+    .auth-heading h1 {
+        font-size: 1.55rem;
+    }
+
+    .auth-brand {
+        margin-bottom: 18px;
+    }
+
+    .auth-brand-name {
+        font-size: 1.55rem;
+    }
+}

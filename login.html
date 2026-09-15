@@ -1,106 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Login | JulJones</title>
+
     <meta
         name="description"
         content="Log in to your JulJones account to view and track your orders."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+
 </head>
+
 
 <body>
 
-    <main>
-        <section>
-            <h1>Welcome back</h1>
-            <p>Log in to view and track your JulJones orders.</p>
+    <main class="auth-page">
 
-            <form id="login-form">
+        <div class="auth-container">
 
-                <div>
-                    <label for="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        autocomplete="email"
-                    >
+
+            <div class="auth-brand">
+
+                <a href="index.html">
+
+                    <p class="auth-brand-name">
+                        JULJONES
+                    </p>
+
+                    <p class="auth-brand-tagline">
+                        Good food. Simply ordered.
+                    </p>
+
+                </a>
+
+            </div>
+
+
+            <section class="auth-card">
+
+
+                <div class="auth-heading">
+
+                    <h1>
+                        Welcome back
+                    </h1>
+
+                    <p>
+                        Log in to view and track
+                        your JulJones orders.
+                    </p>
+
                 </div>
 
-                <div>
-                    <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        autocomplete="current-password"
+
+                <form
+                    id="login-form"
+                    class="auth-form"
+                >
+
+
+                    <div class="form-field">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="password-toggle"
+                                aria-label="Show password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        id="login-button"
+                        class="auth-button"
                     >
+                        Log In
+                    </button>
+
+
+                    <p
+                        id="login-message"
+                        class="auth-message"
+                        role="alert"
+                    ></p>
+
+
+                </form>
+
+
+                <div class="auth-footer">
+
+                    <p>
+                        Don't have an account?
+                        <a href="signup.html">
+                            Create one
+                        </a>
+                    </p>
+
+                    <a
+                        href="index.html"
+                        class="auth-guest"
+                    >
+                        ← Continue as guest
+                    </a>
+
                 </div>
 
-                <button type="submit" id="login-button">
-                    Log In
-                </button>
 
-                <p id="login-message" role="alert"></p>
+            </section>
 
-            </form>
 
-            <p>
-                Don't have an account?
-                <a href="signup.html">Create one</a>
-            </p>
+        </div>
 
-            <p>
-                <a href="index.html">Continue as guest</a>
-            </p>
-        </section>
     </main>
 
+
     <script type="module">
-        import { supabase } from "./supabase-client.js";
 
-        const form = document.getElementById("login-form");
-        const button = document.getElementById("login-button");
-        const message = document.getElementById("login-message");
+        import { supabase }
+            from "./supabase-client.js";
 
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
 
-            const email = document
-                .getElementById("email")
-                .value
-                .trim();
+        const form =
+            document.getElementById("login-form");
 
-            const password = document
-                .getElementById("password")
-                .value;
+        const button =
+            document.getElementById("login-button");
 
-            message.textContent = "";
-            button.disabled = true;
-            button.textContent = "Logging in...";
+        const message =
+            document.getElementById("login-message");
 
-            const { error } = await supabase.auth.signInWithPassword({
-                email,
-                password
-            });
+        const passwordInput =
+            document.getElementById("password");
 
-            if (error) {
-                message.textContent = error.message;
-                button.disabled = false;
-                button.textContent = "Log In";
-                return;
+        const passwordToggle =
+            document.getElementById("password-toggle");
+
+
+        /* =========================================
+           PASSWORD VISIBILITY
+        ========================================= */
+
+        passwordToggle.addEventListener(
+            "click",
+            () => {
+
+                const isPassword =
+                    passwordInput.type === "password";
+
+
+                passwordInput.type =
+                    isPassword
+                        ? "text"
+                        : "password";
+
+
+                passwordToggle.textContent =
+                    isPassword
+                        ? "Hide"
+                        : "Show";
+
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    isPassword
+                        ? "Hide password"
+                        : "Show password"
+                );
+
             }
+        );
 
-            window.location.href = "orders.html";
-        });
+
+        /* =========================================
+           LOGIN
+        ========================================= */
+
+        form.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+
+                const password =
+                    passwordInput.value;
+
+
+                message.textContent = "";
+
+                message.className =
+                    "auth-message";
+
+
+                button.disabled = true;
+
+                button.textContent =
+                    "Logging in...";
+
+
+                const { error } =
+                    await supabase.auth
+                        .signInWithPassword({
+                            email,
+                            password
+                        });
+
+
+                if (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "We couldn't log you in. Please check your email and password.";
+
+                    message.className =
+                        "auth-message error";
+
+
+                    button.disabled = false;
+
+                    button.textContent =
+                        "Log In";
+
+                    return;
+
+                }
+
+
+                window.location.href =
+                    "orders.html";
+
+            }
+        );
+
     </script>
 
 </body>
+
 </html>

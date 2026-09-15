@@ -1,156 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Create Account | JulJones</title>
+
     <meta
         name="description"
         content="Create a JulJones customer account to track your orders."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+
 </head>
+
 
 <body>
 
-    <main>
-        <section>
-            <h1>Create your JulJones account</h1>
-            <p>
-                Create an account to keep track of your orders.
-            </p>
+    <main class="auth-page">
 
-            <form id="signup-form">
+        <div class="auth-container">
 
-                <div>
-                    <label for="full-name">Full name</label>
-                    <input
-                        type="text"
-                        id="full-name"
-                        name="full_name"
-                        required
-                        autocomplete="name"
-                    >
+
+            <div class="auth-brand">
+
+                <a href="index.html">
+
+                    <p class="auth-brand-name">
+                        JULJONES
+                    </p>
+
+                    <p class="auth-brand-tagline">
+                        Good food. Simply ordered.
+                    </p>
+
+                </a>
+
+            </div>
+
+
+            <section class="auth-card">
+
+
+                <div class="auth-heading">
+
+                    <h1>
+                        Create your account
+                    </h1>
+
+                    <p>
+                        Save your details and
+                        keep track of your orders.
+                    </p>
+
                 </div>
 
-                <div>
-                    <label for="phone">Phone number</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        required
-                        autocomplete="tel"
+
+                <form
+                    id="signup-form"
+                    class="auth-form"
+                >
+
+
+                    <div class="form-field">
+
+                        <label for="full-name">
+                            Full name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="full-name"
+                            name="full_name"
+                            placeholder="Your full name"
+                            required
+                            autocomplete="name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="phone">
+                            Phone number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="e.g. 024 123 4567"
+                            required
+                            autocomplete="tel"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="At least 6 characters"
+                                required
+                                minlength="6"
+                                autocomplete="new-password"
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="password-toggle"
+                                aria-label="Show password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        id="signup-button"
+                        class="auth-button"
                     >
+                        Create Account
+                    </button>
+
+
+                    <p
+                        id="signup-message"
+                        class="auth-message"
+                        role="alert"
+                    ></p>
+
+
+                </form>
+
+
+                <div class="auth-footer">
+
+                    <p>
+                        Already have an account?
+                        <a href="login.html">
+                            Log in
+                        </a>
+                    </p>
+
+                    <a
+                        href="index.html"
+                        class="auth-guest"
+                    >
+                        ← Continue as guest
+                    </a>
+
                 </div>
 
-                <div>
-                    <label for="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        autocomplete="email"
-                    >
-                </div>
 
-                <div>
-                    <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        minlength="6"
-                        autocomplete="new-password"
-                    >
-                </div>
+            </section>
 
-                <button type="submit" id="signup-button">
-                    Create Account
-                </button>
 
-                <p id="signup-message" role="alert"></p>
+        </div>
 
-            </form>
-
-            <p>
-                Already have an account?
-                <a href="login.html">Log in</a>
-            </p>
-
-            <p>
-                <a href="index.html">Continue as guest</a>
-            </p>
-        </section>
     </main>
 
+
     <script type="module">
-        import { supabase } from "./supabase-client.js";
 
-        const form = document.getElementById("signup-form");
-        const button = document.getElementById("signup-button");
-        const message = document.getElementById("signup-message");
+        import { supabase }
+            from "./supabase-client.js";
 
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
 
-            const fullName = document
-                .getElementById("full-name")
-                .value
-                .trim();
+        const form =
+            document.getElementById("signup-form");
 
-            const phone = document
-                .getElementById("phone")
-                .value
-                .trim();
+        const button =
+            document.getElementById("signup-button");
 
-            const email = document
-                .getElementById("email")
-                .value
-                .trim();
+        const message =
+            document.getElementById("signup-message");
 
-            const password = document
-                .getElementById("password")
-                .value;
+        const passwordInput =
+            document.getElementById("password");
 
-            message.textContent = "";
-            button.disabled = true;
-            button.textContent = "Creating account...";
+        const passwordToggle =
+            document.getElementById("password-toggle");
 
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: {
-                        full_name: fullName,
-                        phone: phone
+
+        /* =========================================
+           PASSWORD VISIBILITY
+        ========================================= */
+
+        passwordToggle.addEventListener(
+            "click",
+            () => {
+
+                const isPassword =
+                    passwordInput.type === "password";
+
+
+                passwordInput.type =
+                    isPassword
+                        ? "text"
+                        : "password";
+
+
+                passwordToggle.textContent =
+                    isPassword
+                        ? "Hide"
+                        : "Show";
+
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    isPassword
+                        ? "Hide password"
+                        : "Show password"
+                );
+
+            }
+        );
+
+
+        /* =========================================
+           SIGNUP
+        ========================================= */
+
+        form.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+
+                const fullName =
+                    document
+                        .getElementById("full-name")
+                        .value
+                        .trim();
+
+
+                const phone =
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+
+                const password =
+                    passwordInput.value;
+
+
+                message.textContent = "";
+
+                message.className =
+                    "auth-message";
+
+
+                button.disabled = true;
+
+                button.textContent =
+                    "Creating account...";
+
+
+                const {
+                    data,
+                    error
+                } = await supabase.auth.signUp({
+
+                    email,
+
+                    password,
+
+                    options: {
+
+                        data: {
+
+                            full_name:
+                                fullName,
+
+                            phone:
+                                phone
+
+                        }
+
                     }
+
+                });
+
+
+                if (error) {
+
+                    console.error(
+                        "Signup error:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "We couldn't create your account. Please check your details and try again.";
+
+                    message.className =
+                        "auth-message error";
+
+
+                    button.disabled = false;
+
+                    button.textContent =
+                        "Create Account";
+
+                    return;
+
                 }
-            });
 
-            if (error) {
-                message.textContent = error.message;
+
+                if (data.session) {
+
+                    window.location.href =
+                        "orders.html";
+
+                    return;
+
+                }
+
+
+                message.textContent =
+                    "Account created. Please check your email to confirm your account.";
+
+                message.className =
+                    "auth-message success";
+
+
                 button.disabled = false;
-                button.textContent = "Create Account";
-                return;
+
+                button.textContent =
+                    "Create Account";
+
             }
+        );
 
-            if (data.session) {
-                window.location.href = "orders.html";
-                return;
-            }
-
-            message.textContent =
-                "Account created. Please check your email to confirm your account.";
-
-            button.disabled = false;
-            button.textContent = "Create Account";
-        });
     </script>
 
 </body>
+
 </html>
