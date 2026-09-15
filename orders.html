@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | JulJones</title>
+    <meta
+        name="description"
+        content="View and track your JulJones orders."
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main>
+        <section>
+            <h1>My Orders</h1>
+
+            <div id="auth-status">
+                Checking your account...
+            </div>
+
+            <div id="orders-container"></div>
+
+            <p>
+                <a href="index.html">Back to JulJones</a>
+            </p>
+
+            <button id="logout-button" type="button">
+                Log Out
+            </button>
+        </section>
+    </main>
+
+    <script type="module">
+        import { supabase } from "./supabase-client.js";
+
+        const authStatus = document.getElementById("auth-status");
+        const ordersContainer =
+            document.getElementById("orders-container");
+        const logoutButton =
+            document.getElementById("logout-button");
+
+        let currentUser = null;
+
+        async function loadOrders() {
+
+            ordersContainer.innerHTML =
+                "<p>Loading your orders...</p>";
+
+            const { data: orders, error } = await supabase
+                .from("orders")
+                .select(`
+                    id,
+                    order_number,
+                    customer_name,
+                    order_type,
+                    delivery_address,
+                    preferred_time,
+                    special_instructions,
+                    subtotal,
+                    delivery_fee,
+                    total_amount,
+                    payment_method,
+                    payment_status,
+                    status,
+                    created_at,
+                    updated_at,
+                    confirmed_at,
+                    completed_at,
+                    cancelled_at,
+                    branch_id,
+                    order_items (
+                        id,
+                        item_name,
+                        unit_price,
+                        quantity,
+                        subtotal
+                    )
+                `)
+                .eq("customer_id", currentUser.id)
+                .order("created_at", {
+                    ascending: false
+                });
+
+            if (error) {
+                console.error("Order loading error:", error);
+
+                ordersContainer.innerHTML =
+                    "<p>We couldn't load your orders. Please try again.</p>";
+
+                return;
+            }
+
+            if (!orders || orders.length === 0) {
+                ordersContainer.innerHTML = `
+                    <p>You haven't placed any orders yet.</p>
+                    <p>
+                        <a href="contact.html">Place your first order</a>
+                    </p>
+                `;
+
+                return;
+            }
+
+            ordersContainer.innerHTML = "";
+
+            orders.forEach(order => {
+
+                const orderElement =
+                    document.createElement("article");
+
+                const createdAt =
+                    new Date(order.created_at)
+                        .toLocaleString();
+
+                const itemsHtml =
+                    (order.order_items || [])
+                        .map(item => `
+                            <li>
+                                ${item.item_name}
+                                × ${item.quantity}
+                                — GHS ${Number(item.subtotal).toFixed(2)}
+                            </li>
+                        `)
+                        .join("");
+
+                orderElement.innerHTML = `
+                    <h2>
+                        Order #${order.order_number}
+                    </h2>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${order.status}
+                    </p>
+
+                    <p>
+                        <strong>Placed:</strong>
+                        ${createdAt}
+                    </p>
+
+                    <p>
+                        <strong>Order type:</strong>
+                        ${order.order_type}
+                    </p>
+
+                    <h3>Items</h3>
+
+                    <ul>
+                        ${itemsHtml}
+                    </ul>
+
+                    <p>
+                        <strong>Subtotal:</strong>
+                        GHS ${Number(order.subtotal).toFixed(2)}
+                    </p>
+
+                    <p>
+                        <strong>Delivery:</strong>
+                        GHS ${Number(order.delivery_fee).toFixed(2)}
+                    </p>
+
+                    <p>
+                        <strong>Total:</strong>
+                        GHS ${Number(order.total_amount).toFixed(2)}
+                    </p>
+
+                    <hr>
+                `;
+
+                ordersContainer.appendChild(orderElement);
+            });
+        }
+
+
+        function subscribeToOrderUpdates(userId) {
+    const channel = supabase
+  .channel(`customer-orders-${userId}`)
+  .on(
+    "postgres_changes",
+    {
+      event: "UPDATE",
+      schema: "public",
+      table: "orders",
+      filter: `customer_id=eq.${userId}`,
+    },
+    (payload) => {
+      console.log("REALTIME ORDER UPDATE:", payload);
+      loadOrders();
+    }
+  )
+  .subscribe((status) => {
+    console.log("REALTIME STATUS:", status);
+  });
+
+return channel;
+}
+
+
+        async function initialize() {
+
+            const {
+                data: { user },
+                error
+            } = await supabase.auth.getUser();
+
+            if (error || !user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            currentUser = user;
+
+            authStatus.textContent =
+                `Logged in as ${user.email}`;
+
+            await loadOrders();
+
+            subscribeToOrderUpdates(currentUser.id);     
+           }
+
+        logoutButton.addEventListener("click", async () => {
+
+            logoutButton.disabled = true;
+            logoutButton.textContent = "Logging out...";
+
+            const { error } =
+                await supabase.auth.signOut();
+
+            if (error) {
+                console.error("Logout error:", error);
+
+                logoutButton.disabled = false;
+                logoutButton.textContent = "Log Out";
+
+                return;
+            }
+
+            window.location.href = "index.html";
+        });
+
+        initialize();
+    </script>
+
+</body>
+</html>
