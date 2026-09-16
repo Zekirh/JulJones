@@ -92,67 +92,105 @@ async function loadMenuFromSupabase() {
 }
 
 
-function syncMenuIntoPage(menuItems) {
+function syncMenuIntoPage() {
 
-    MenuState.setItems(menuItems);
+    const menuElements =
+        document.querySelectorAll(
+            ".menu-item[data-dish-id], .dish-card[data-dish-id]"
+        );
 
-    document
-        .querySelectorAll(
-            ".menu-item[data-dish-id]"
-        )
-        .forEach((menuElement) => {
+    menuElements.forEach((element) => {
 
-            const slug =
-                menuElement.dataset.dishId;
+        const slug =
+            element.dataset.dishId;
 
-            const item =
-                MenuState.getItem(slug);
+        if (!slug) {
+            return;
+        }
 
-            if (!item) {
-                return;
-            }
+        const item =
+            MenuState.getItem(slug);
 
-            menuElement.dataset.dishId =
-                item.slug;
+        if (!item) {
+            return;
+        }
 
-            menuElement.dataset.dishName =
+        // Keep DOM data synchronized with Supabase.
+        element.dataset.dishName =
+            item.name;
+
+        element.dataset.dishPrice =
+            item.price;
+
+        /* -------------------------
+           Menu page
+           ------------------------- */
+
+        const menuName =
+            element.querySelector(
+                ".menu-item-header h3"
+            );
+
+        const menuPrice =
+            element.querySelector(
+                ".menu-item-header .price"
+            );
+
+        const menuDescription =
+            element.querySelector(
+                ".menu-item-content > p"
+            );
+
+        if (menuName) {
+            menuName.textContent =
                 item.name;
+        }
 
-            menuElement.dataset.dishPrice =
-                item.price;
+        if (menuPrice) {
+            menuPrice.textContent =
+                formatPrice(item.price);
+        }
 
-            const nameElement =
-                menuElement.querySelector(
-                    ".menu-item-header h3"
-                );
+        if (menuDescription) {
+            menuDescription.textContent =
+                item.description || "";
+        }
 
-            const priceElement =
-                menuElement.querySelector(
-                    ".price"
-                );
 
-            const descriptionElement =
-                menuElement.querySelector(
-                    ".menu-item-content > p"
-                );
+        /* -------------------------
+           Homepage featured cards
+           ------------------------- */
 
-            if (nameElement) {
-                nameElement.textContent =
-                    item.name;
-            }
+        const dishName =
+            element.querySelector(
+                ".dish-card-heading"
+            );
 
-            if (priceElement) {
-                priceElement.textContent =
-                    formatPrice(
-                        item.price
-                    );
-            }
+        const dishPrice =
+            element.querySelector(
+                ".dish-price"
+            );
 
-            if (descriptionElement) {
-                descriptionElement.textContent =
-                    item.description || "";
-            }
-        });
+        const dishDescription =
+            element.querySelector(
+                ".dish-info > p"
+            );
+
+        if (dishName) {
+            dishName.textContent =
+                item.name;
+        }
+
+        if (dishPrice) {
+            dishPrice.textContent =
+                formatPrice(item.price);
+        }
+
+        if (dishDescription) {
+            dishDescription.textContent =
+                item.description || "";
+        }
+    });
 }
 
 
@@ -172,7 +210,9 @@ const Cart = {
                 );
 
             const items =
-                JSON.parse(raw || "[]");
+                JSON.parse(
+                    raw || "[]"
+                );
 
             if (!Array.isArray(items)) {
                 return [];
@@ -248,7 +288,7 @@ const Cart = {
                 MAX_ITEM_QUANTITY
             ) {
 
-                alert(
+                showToast(
                     `Maximum quantity per item is ${MAX_ITEM_QUANTITY}.`
                 );
 
@@ -288,6 +328,7 @@ const Cart = {
         if (quantity <= 0) {
 
             this.removeItem(slug);
+
             return;
         }
 
@@ -328,7 +369,8 @@ const Cart = {
 
     getDetailedItems() {
 
-        return this.getItems()
+        return this
+            .getItems()
             .map((cartItem) => {
 
                 const menuItem =
@@ -400,57 +442,25 @@ const Cart = {
 
     injectUI() {
 
-        const navWrapper =
-            document.querySelector(
-                ".nav-wrapper"
-            );
-
-        if (
-            navWrapper &&
-            !document.getElementById(
+        const cartToggle =
+            document.getElementById(
                 "cartToggle"
-            )
-        ) {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-            button.type = "button";
-            button.id = "cartToggle";
-            button.className =
-                "cart-toggle";
-
-            button.setAttribute(
-                "aria-label",
-                "Open cart"
             );
 
-            button.innerHTML = `
-                <span
-                    class="cart-icon"
-                    aria-hidden="true"
-                >
-                    🛒
-                </span>
+        if (!cartToggle) {
 
-                <span
-                    class="cart-count"
-                    id="cartCount"
-                >
-                    0
-                </span>
-            `;
-
-            navWrapper.insertBefore(
-                button,
-                navWrapper.querySelector(
-                    ".hamburger"
-                )
+            console.warn(
+                "Cart toggle element not found."
             );
+
+            return;
         }
 
+        /*
+         * The cart button now exists directly
+         * in the HTML so the navbar does not shift
+         * while JavaScript is loading.
+         */
 
         if (
             !document.getElementById(
@@ -571,6 +581,10 @@ const Cart = {
             this.getDetailedItems();
 
 
+        /* -------------------------
+           Cart badge
+           ------------------------- */
+
         if (countElement) {
 
             const count =
@@ -585,6 +599,10 @@ const Cart = {
                     : "none";
         }
 
+
+        /* -------------------------
+           Empty cart
+           ------------------------- */
 
         if (
             detailedItems.length === 0
@@ -605,6 +623,10 @@ const Cart = {
             return;
         }
 
+
+        /* -------------------------
+           Render items
+           ------------------------- */
 
         container.innerHTML =
             detailedItems
@@ -738,17 +760,26 @@ const Cart = {
             this.getDetailedItems();
 
 
+        /* -------------------------
+           No cart items
+           ------------------------- */
+
         if (!items.length) {
 
-            summary.hidden = true;
-            summary.innerHTML = "";
+            summary.hidden =
+                true;
+
+            summary.innerHTML =
+                "";
 
             if (dishGroup) {
-                dishGroup.hidden = false;
+                dishGroup.hidden =
+                    false;
             }
 
             if (quantityGroup) {
-                quantityGroup.hidden = false;
+                quantityGroup.hidden =
+                    false;
             }
 
             dishSelect?.setAttribute(
@@ -765,15 +796,22 @@ const Cart = {
         }
 
 
-        summary.hidden = false;
+        /* -------------------------
+           Cart has items
+           ------------------------- */
+
+        summary.hidden =
+            false;
 
 
         if (dishGroup) {
-            dishGroup.hidden = true;
+            dishGroup.hidden =
+                true;
         }
 
         if (quantityGroup) {
-            quantityGroup.hidden = true;
+            quantityGroup.hidden =
+                true;
         }
 
         dishSelect?.removeAttribute(
@@ -850,7 +888,9 @@ const Cart = {
                 "cartOverlay"
             );
 
-        panel?.classList.add("open");
+        panel?.classList.add(
+            "open"
+        );
 
         panel?.setAttribute(
             "aria-hidden",
@@ -898,6 +938,10 @@ const Cart = {
 
     bindEvents() {
 
+        /* -------------------------
+           Open cart
+           ------------------------- */
+
         document
             .getElementById(
                 "cartToggle"
@@ -907,6 +951,10 @@ const Cart = {
                 () => this.openPanel()
             );
 
+
+        /* -------------------------
+           Close cart
+           ------------------------- */
 
         document
             .getElementById(
@@ -928,6 +976,10 @@ const Cart = {
             );
 
 
+        /* -------------------------
+           Clear cart
+           ------------------------- */
+
         document
             .getElementById(
                 "cartClear"
@@ -943,16 +995,20 @@ const Cart = {
                         return;
                     }
 
-                    if (
-                        confirm(
-                            "Remove all items from your cart?"
-                        )
-                    ) {
+                       showConfirmation(
+                       "Remove all items from your cart?",
+                       () => {
                         this.clear();
-                    }
+                        },
+                       "Clear your cart?"
+                       );
                 }
             );
 
+
+        /* -------------------------
+           Cart quantity controls
+           ------------------------- */
 
         document
             .getElementById(
@@ -1026,6 +1082,10 @@ const Cart = {
             );
 
 
+        /* -------------------------
+           Add to Cart
+           ------------------------- */
+
         document
             .querySelectorAll(
                 ".add-to-cart-btn"
@@ -1043,15 +1103,39 @@ const Cart = {
                                 );
 
                             const slug =
-                                menuElement?.dataset
+                                menuElement
+                                    ?.dataset
                                     .dishId;
 
                             if (!slug) {
                                 return;
                             }
 
+                            const menuItem =
+                                MenuState.getItem(
+                                    slug
+                                );
+
+                            if (!menuItem) {
+
+                                console.error(
+                                    "Menu item unavailable:",
+                                    slug
+                                );
+
+                                showToast(
+                                    "This dish is currently unavailable."
+                                );
+
+                                return;
+                            }
+
                             this.addItem(
                                 slug
+                            );
+
+                            showToast(
+                                `${menuItem.name} added to your cart`
                             );
 
                             const originalText =
@@ -1116,7 +1200,8 @@ async function loadBranches() {
         return;
     }
 
-    select.disabled = true;
+    select.disabled =
+        true;
 
     select.innerHTML = `
         <option value="">
@@ -1193,7 +1278,8 @@ async function loadBranches() {
     );
 
 
-    select.disabled = false;
+    select.disabled =
+        false;
 }
 
 
@@ -1294,6 +1380,308 @@ function populateDishSelect(menuItems) {
 }
 
 
+function showConfirmation(
+    message,
+    onConfirm,
+    title = "Are you sure?"
+) {
+    const modal =
+        document.getElementById(
+            "confirmModal"
+        );
+
+    const messageElement =
+        document.getElementById(
+            "confirmModalMessage"
+        );
+
+    const titleElement =
+        document.getElementById(
+            "confirmModalTitle"
+        );
+
+    const confirmButton =
+        document.getElementById(
+            "confirmAction"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "confirmCancel"
+        );
+
+    if (
+        !modal ||
+        !messageElement ||
+        !titleElement ||
+        !confirmButton ||
+        !cancelButton
+    ) {
+        return;
+    }
+
+    titleElement.textContent =
+        title;
+
+    messageElement.textContent =
+        message;
+
+    modal.hidden =
+        false;
+
+    document.body.style.overflow =
+        "hidden";
+
+    const close = () => {
+
+        modal.hidden =
+            true;
+
+        document.body.style.overflow =
+            "";
+    };
+
+    const handleConfirm = () => {
+
+        close();
+
+        onConfirm();
+    };
+
+    confirmButton.onclick =
+        handleConfirm;
+
+    cancelButton.onclick =
+        close;
+
+    modal
+        .querySelectorAll(
+            "[data-close-confirm]"
+        )
+        .forEach(
+            (element) => {
+                element.onclick =
+                    close;
+            }
+        );
+}
+
+
+/* =========================================================
+   APP NOTIFICATIONS
+   ========================================================= */
+
+function showToast(message) {
+
+    const container =
+        document.getElementById(
+            "toastContainer"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+    toast.className =
+        "toast";
+
+    toast.innerHTML = `
+        <span
+            class="toast-icon"
+            aria-hidden="true"
+        >
+            ✓
+        </span>
+
+        <span class="toast-message">
+            ${escapeHtml(message)}
+        </span>
+
+        <button
+            type="button"
+            class="toast-close"
+            aria-label="Dismiss notification"
+        >
+            &times;
+        </button>
+    `;
+
+    let timeoutId;
+
+    const closeToast = () => {
+
+        clearTimeout(
+            timeoutId
+        );
+
+        if (!toast.isConnected) {
+            return;
+        }
+
+        toast.classList.add(
+            "is-leaving"
+        );
+
+        setTimeout(
+            () => {
+                toast.remove();
+            },
+            200
+        );
+    };
+
+    toast
+        .querySelector(
+            ".toast-close"
+        )
+        ?.addEventListener(
+            "click",
+            closeToast
+        );
+
+    container.appendChild(
+        toast
+    );
+
+    timeoutId =
+        setTimeout(
+            closeToast,
+            3000
+        );
+}
+
+
+function showOrderConfirmation(order) {
+
+    const modal =
+        document.getElementById(
+            "orderModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    const orderNumber =
+        document.getElementById(
+            "orderModalNumber"
+        );
+
+    const total =
+        document.getElementById(
+            "orderModalTotal"
+        );
+
+    const payment =
+        document.getElementById(
+            "orderModalPayment"
+        );
+
+    const message =
+        document.getElementById(
+            "orderModalMessage"
+        );
+
+
+    if (orderNumber) {
+
+        orderNumber.textContent =
+            order?.order_number
+                ? `#${order.order_number}`
+                : "Confirmed";
+    }
+
+
+    if (total) {
+
+        total.textContent =
+            order?.total_amount !== undefined
+                ? formatPrice(
+                      order.total_amount
+                  )
+                : "—";
+    }
+
+
+    if (payment) {
+
+        payment.textContent =
+            "Cash";
+    }
+
+
+    if (message) {
+
+        message.textContent =
+            "Your order has been successfully received and sent to our kitchen.";
+    }
+
+
+    modal.hidden =
+        false;
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeOrderConfirmation() {
+
+    const modal =
+        document.getElementById(
+            "orderModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.hidden =
+        true;
+
+    document.body.style.overflow =
+        "";
+}
+
+
+function setupNotifications() {
+
+    document
+        .querySelectorAll(
+            "[data-close-order-modal]"
+        )
+        .forEach(
+            (element) => {
+
+                element.addEventListener(
+                    "click",
+                    closeOrderConfirmation
+                );
+            }
+        );
+
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key ===
+                "Escape"
+            ) {
+
+                closeOrderConfirmation();
+            }
+        }
+    );
+}
+
+
 /* =========================================================
    ORDER SUBMISSION
    ========================================================= */
@@ -1331,6 +1719,10 @@ function setupOrderForm() {
         );
 
 
+    /* -------------------------
+       Delivery address toggle
+       ------------------------- */
+
     deliverySelect?.addEventListener(
         "change",
         () => {
@@ -1367,6 +1759,10 @@ function setupOrderForm() {
     );
 
 
+    /* -------------------------
+       Submit
+       ------------------------- */
+
     form.addEventListener(
         "submit",
         async (event) => {
@@ -1378,7 +1774,7 @@ function setupOrderForm() {
                 !MenuState.hasItems()
             ) {
 
-                alert(
+                showToast(
                     "The menu is currently unavailable. Please try again shortly."
                 );
 
@@ -1401,7 +1797,7 @@ function setupOrderForm() {
 
             if (!branchId) {
 
-                alert(
+                showToast(
                     "Please select a JulJones Kitchen."
                 );
 
@@ -1438,18 +1834,20 @@ function setupOrderForm() {
             const preferredTime =
                 document.getElementById(
                     "preferred-time"
-                )?.value || null;
+                )?.value ||
+                null;
 
 
             const specialInstructions =
                 document.getElementById(
                     "special"
-                )?.value.trim() || null;
+                )?.value.trim() ||
+                null;
 
 
             if (!name || !phone) {
 
-                alert(
+                showToast(
                     "Please provide your name and phone number."
                 );
 
@@ -1462,7 +1860,7 @@ function setupOrderForm() {
                 orderType !== "delivery"
             ) {
 
-                alert(
+                showToast(
                     "Please select pickup or delivery."
                 );
 
@@ -1475,7 +1873,7 @@ function setupOrderForm() {
                 !address
             ) {
 
-                alert(
+                showToast(
                     "Please provide your delivery address."
                 );
 
@@ -1484,20 +1882,20 @@ function setupOrderForm() {
 
 
             /*
-             * Cash is the only currently supported
-             * payment method.
+             * Cash is currently the only
+             * supported payment method.
              *
-             * This is enforced again in the RPC
-             * and by the database constraint.
+             * The RPC and database enforce
+             * this independently.
              */
 
             const paymentMethod =
                 "cash";
 
 
-            /*
-             * Build authoritative item IDs.
-             */
+            /* -------------------------
+               Build authoritative items
+               ------------------------- */
 
             let rpcItems = [];
 
@@ -1513,6 +1911,7 @@ function setupOrderForm() {
                     document.getElementById(
                         "dish"
                     )?.value;
+
 
                 const quantity =
                     Number(
@@ -1530,7 +1929,7 @@ function setupOrderForm() {
 
                 if (!menuItem) {
 
-                    alert(
+                    showToast(
                         "Please select a valid menu item."
                     );
 
@@ -1545,7 +1944,7 @@ function setupOrderForm() {
                     quantity <= 0
                 ) {
 
-                    alert(
+                    showToast(
                         "Please enter a valid quantity."
                     );
 
@@ -1558,7 +1957,7 @@ function setupOrderForm() {
                     MAX_ITEM_QUANTITY
                 ) {
 
-                    alert(
+                    showToast(
                         `Maximum quantity per item is ${MAX_ITEM_QUANTITY}.`
                     );
 
@@ -1581,13 +1980,17 @@ function setupOrderForm() {
                 !rpcItems.length
             ) {
 
-                alert(
+                showToast(
                     "Your order contains no valid items."
                 );
 
                 return;
             }
 
+
+            /* -------------------------
+               Processing state
+               ------------------------- */
 
             submitButton.disabled =
                 true;
@@ -1615,7 +2018,8 @@ function setupOrderForm() {
                                 phone,
 
                             p_email:
-                                email || null,
+                                email ||
+                                null,
 
                             p_branch_id:
                                 branchId,
@@ -1651,7 +2055,7 @@ function setupOrderForm() {
                         error
                     );
 
-                    alert(
+                    showToast(
                         error.message ||
                         "We could not place your order. Please try again."
                     );
@@ -1671,6 +2075,7 @@ function setupOrderForm() {
                         "branch"
                     );
 
+
                 const branchName =
                     branchSelect
                         ?.selectedOptions[0]
@@ -1678,56 +2083,41 @@ function setupOrderForm() {
                     "your selected kitchen";
 
 
-                let message =
-                    "Order placed successfully!";
-
-
-                if (
-                    order?.order_number
-                ) {
-
-                    message +=
-                        `\n\nOrder Number: #${order.order_number}`;
-                }
-
-
-                message +=
-                    `\nKitchen: ${branchName}`;
-
-
-                message +=
-                    "\nPayment: Cash";
-
-
-                if (
-                    order?.total_amount !==
-                    undefined
-                ) {
-
-                    message +=
-                        `\nTotal: ${formatPrice(
-                            order.total_amount
-                        )}`;
-                }
-
+                /*
+                 * Clear the cart only after the
+                 * order has successfully been created.
+                 */
 
                 if (hasCartItems) {
+
                     Cart.clear();
                 }
 
 
-                alert(message);
+                /*
+                 * Show the JulJones confirmation
+                 * modal instead of a browser alert.
+                 */
+
+                showOrderConfirmation({
+                    ...order,
+                    branch_name:
+                        branchName
+                });
+
 
                 form.reset();
 
 
                 if (addressGroup) {
+
                     addressGroup.hidden =
                         true;
                 }
 
 
                 if (addressInput) {
+
                     addressInput.removeAttribute(
                         "required"
                     );
@@ -1748,7 +2138,7 @@ function setupOrderForm() {
                     error
                 );
 
-                alert(
+                showToast(
                     "Something went wrong while placing your order. Please try again."
                 );
 
@@ -2110,122 +2500,93 @@ document.addEventListener(
     "DOMContentLoaded",
     async () => {
 
+        // Global UI
+        Cart.init();
+        setupNotifications();
+
         try {
 
-            setupNavigation();
-            setupMenuFilters();
-            setupGalleryFilters();
-            setupBackToTop();
-            setupAnimations();
-
-
             /*
-             * Menu is loaded once and becomes the
-             * authoritative client-side reference
-             * for display and cart rendering.
+             * Load authoritative menu data
+             * from Supabase.
              */
 
             const {
-                items: menuItems
+                items,
+                error
             } =
                 await loadMenuFromSupabase();
 
 
-            if (
-                !menuItems.length
-            ) {
+            if (error) {
 
-                console.warn(
-                    "No available menu items were loaded."
+                console.error(
+                    "Menu initialization failed:",
+                    error
                 );
 
             } else {
 
-                syncMenuIntoPage(
-                    menuItems
+                /*
+                 * Store menu data in frontend state.
+                 */
+
+                MenuState.setItems(
+                    items
                 );
+
+
+                /*
+                 * Synchronize menu information
+                 * into the current page.
+                 */
+
+                syncMenuIntoPage();
+
+
+                /*
+                 * Populate checkout selector.
+                 */
 
                 populateDishSelect(
-                    menuItems
+                    items
                 );
+
+
+                /*
+                 * IMPORTANT:
+                 * Cart.init() executes before Supabase
+                 * finishes loading. Re-render after
+                 * MenuState is populated so stored
+                 * cart items can resolve correctly.
+                 */
+
+                Cart.updateUI();
             }
-
-
-            /*
-             * Cart UI works on every customer page.
-             */
-
-            Cart.init();
-
-
-            /*
-             * Checkout-specific setup.
-             */
-
-            await loadBranches();
-
-            setupOrderForm();
 
         } catch (error) {
 
             console.error(
-                "JulJones frontend initialization error:",
+                "Menu initialization failed:",
                 error
             );
-
-            /*
-             * Never leave the customer staring at
-             * a blank page because one initialization
-             * feature failed.
-             */
-
-            const form =
-                document.getElementById(
-                    "orderForm"
-                );
-
-            if (form) {
-
-                const message =
-                    document.createElement(
-                        "p"
-                    );
-
-                message.className =
-                    "checkout-error";
-
-                message.textContent =
-                    "Some ordering features are temporarily unavailable. Please refresh and try again.";
-
-                form.prepend(
-                    message
-                );
-            }
         }
 
+
         /*
-         * Always reveal the page.
+         * Checkout / page-specific functionality.
+         */
+
+        loadBranches();
+        setupOrderForm();
+
+
+        /*
+         * Reveal page.
          */
 
         document.body.classList.add(
             "loaded"
         );
     }
-);
-
-
-/*
- * Fallback page reveal even if a future
- * initialization error happens before the
- * normal path completes.
- */
-
-window.addEventListener(
-    "load",
-    () => {
-
-        document.body.classList.add(
-            "loaded"
-        );
-    }
-);
+); 

@@ -1582,3 +1582,436 @@ body {
     display: none !important;
 }
 
+/* ============================================
+   Homepage Ordering UX
+   ============================================ */
+
+.section-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.dish-card {
+    position: relative;
+}
+
+.dish-card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.dish-card-heading h3 {
+    margin-bottom: 0;
+}
+
+.dish-card-badge {
+    flex-shrink: 0;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--primary-color);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.dish-overlay {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.dish-card .dish-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.dish-card .dish-link:hover {
+    transform: translateX(4px);
+}
+
+.featured-dishes .section-header {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.featured-dishes .view-all {
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 480px) {
+
+    .dish-card-heading {
+        align-items: flex-start;
+    }
+
+    .dish-card-badge {
+        font-size: 0.65rem;
+    }
+
+}
+
+/* =========================
+   APP NOTIFICATIONS
+   ========================= */
+
+.toast-container {
+    position: fixed;
+    top: 90px;
+    right: 24px;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(360px, calc(100vw - 32px));
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+    pointer-events: auto;
+    animation: toast-in 0.25s ease forwards;
+}
+
+.toast-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    border-radius: 50%;
+    background: #fff3e8;
+    font-weight: 700;
+    color: #b45309;
+}
+
+.toast-message {
+    flex: 1;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: #1a1a1a;
+}
+
+.toast-close {
+    border: 0;
+    background: transparent;
+    font-size: 1.2rem;
+    color: #777;
+    cursor: pointer;
+}
+
+.toast.is-leaving {
+    animation: toast-out 0.2s ease forwards;
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) translateX(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) translateX(0);
+    }
+}
+
+@keyframes toast-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-8px) translateX(10px);
+    }
+}
+
+
+/* =========================
+   ORDER CONFIRMATION MODAL
+   ========================= */
+
+.order-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+
+.order-modal[hidden] {
+    display: none;
+}
+
+.order-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 15, 10, 0.62);
+    backdrop-filter: blur(4px);
+}
+
+.order-modal-card {
+    position: relative;
+    width: min(500px, 100%);
+    padding: 34px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    animation: modal-in 0.25s ease forwards;
+}
+
+.order-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: #f5f5f5;
+    color: #444;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.order-success-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #fff3e8;
+    color: #b45309;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.order-modal-eyebrow {
+    margin: 0 0 8px;
+    color: #b45309;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.order-modal-card h2 {
+    margin-bottom: 10px;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(1.7rem, 4vw, 2.2rem);
+}
+
+.order-modal-message {
+    margin-bottom: 24px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.order-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.order-summary > div {
+    padding: 14px 10px;
+    border-radius: 12px;
+    background: #faf7f3;
+}
+
+.order-summary span {
+    display: block;
+    margin-bottom: 5px;
+    color: #777;
+    font-size: 0.75rem;
+}
+
+.order-summary strong {
+    display: block;
+    color: #1a1a1a;
+    font-size: 0.92rem;
+}
+
+.order-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.order-modal-actions .btn {
+    flex: 1;
+}
+
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 560px) {
+    .toast-container {
+        top: 76px;
+        right: 16px;
+        left: 16px;
+        width: auto;
+    }
+
+    .order-modal-card {
+        padding: 28px 20px 22px;
+        border-radius: 20px;
+    }
+
+    .order-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .order-modal-actions {
+        flex-direction: column;
+    }
+}
+
+/* =========================================
+   APP CONFIRMATION DIALOG
+========================================= */
+
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3200;
+
+    display: grid;
+    place-items: center;
+
+    padding: 20px;
+}
+
+.confirm-modal[hidden] {
+    display: none;
+}
+
+.confirm-modal-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(20, 15, 10, 0.62);
+
+    backdrop-filter: blur(4px);
+}
+
+.confirm-modal-card {
+    position: relative;
+    width: min(430px, 100%);
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.25);
+
+    text-align: center;
+
+    animation:
+        confirm-modal-in
+        0.22s ease forwards;
+}
+
+.confirm-modal-icon {
+    display: grid;
+    place-items: center;
+
+    width: 54px;
+    height: 54px;
+
+    margin: 0 auto 16px;
+
+    border-radius: 50%;
+
+    background: #fff3e8;
+    color: #b45309;
+
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.confirm-modal-card h2 {
+    margin-bottom: 10px;
+
+    font-family:
+        "Playfair Display",
+        serif;
+}
+
+.confirm-modal-card p {
+    margin-bottom: 24px;
+
+    color: #666;
+    line-height: 1.6;
+}
+
+.confirm-modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.confirm-modal-actions .btn {
+    flex: 1;
+}
+
+@keyframes confirm-modal-in {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(12px)
+            scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+@media (max-width: 520px) {
+
+    .confirm-modal-card {
+        padding: 26px 20px;
+    }
+
+    .confirm-modal-actions {
+        flex-direction: column;
+    }
+}

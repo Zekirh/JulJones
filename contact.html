@@ -75,6 +75,140 @@
     >
 </head>
 
+<!-- App Notifications -->
+<div
+    id="toastContainer"
+    class="toast-container"
+    aria-live="polite"
+    aria-atomic="true"
+></div>
+
+<div
+    id="orderModal"
+    class="order-modal"
+    hidden
+    aria-labelledby="orderModalTitle"
+    aria-modal="true"
+    role="dialog"
+>
+    <div class="order-modal-backdrop" data-close-order-modal></div>
+
+    <div class="order-modal-card">
+        <button
+            type="button"
+            class="order-modal-close"
+            data-close-order-modal
+            aria-label="Close order confirmation"
+        >
+            &times;
+        </button>
+
+        <div class="order-success-icon" aria-hidden="true">
+            ✓
+        </div>
+
+        <p class="order-modal-eyebrow">
+            Order Confirmed
+        </p>
+
+        <h2 id="orderModalTitle">
+            Your order has been received
+        </h2>
+
+        <p
+            id="orderModalMessage"
+            class="order-modal-message"
+        ></p>
+
+        <div class="order-summary">
+            <div>
+                <span>Order Number</span>
+                <strong id="orderModalNumber">—</strong>
+            </div>
+
+            <div>
+                <span>Total</span>
+                <strong id="orderModalTotal">—</strong>
+            </div>
+
+            <div>
+                <span>Payment</span>
+                <strong id="orderModalPayment">—</strong>
+            </div>
+        </div>
+
+        <div class="order-modal-actions">
+            <a
+                href="orders.html"
+                class="btn btn-primary"
+                id="viewOrdersButton"
+            >
+                View My Orders
+            </a>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                data-close-order-modal
+            >
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- App Confirmation Dialog -->
+<div
+    id="confirmModal"
+    class="confirm-modal"
+    hidden
+    aria-modal="true"
+    role="dialog"
+    aria-labelledby="confirmModalTitle"
+>
+    <div
+        class="confirm-modal-backdrop"
+        data-close-confirm
+    ></div>
+
+    <div class="confirm-modal-card">
+
+        <div class="confirm-modal-icon" aria-hidden="true">
+            ?
+        </div>
+
+        <h2 id="confirmModalTitle">
+            Are you sure?
+        </h2>
+
+        <p id="confirmModalMessage">
+            Are you sure you want to continue?
+        </p>
+
+        <div class="confirm-modal-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="confirmCancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="confirmAction"
+            >
+                Confirm
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
 
 <body>
 
@@ -125,9 +259,34 @@
                             Order Now
                         </a>
                     </li>
-
+ <a href="orders.html">
+            My Orders
+        </a>
+    </li>
                 </ul>
 
+                
+
+                    <button
+    type="button"
+    class="cart-toggle"
+    id="cartToggle"
+    aria-label="Open cart"
+>
+    <span
+        class="cart-icon"
+        aria-hidden="true"
+    >
+        🛒
+    </span>
+
+    <span
+        class="cart-count"
+        id="cartCount"
+    >
+        0
+    </span>
+</button>
 
                 <div class="hamburger">
 

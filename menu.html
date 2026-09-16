@@ -73,6 +73,89 @@
         rel="stylesheet"
     >
 </head>
+
+<!-- App Notifications -->
+<div
+    id="toastContainer"
+    class="toast-container"
+    aria-live="polite"
+    aria-atomic="true"
+></div>
+
+<div
+    id="orderModal"
+    class="order-modal"
+    hidden
+    aria-labelledby="orderModalTitle"
+    aria-modal="true"
+    role="dialog"
+>
+    <div class="order-modal-backdrop" data-close-order-modal></div>
+
+    <div class="order-modal-card">
+        <button
+            type="button"
+            class="order-modal-close"
+            data-close-order-modal
+            aria-label="Close order confirmation"
+        >
+            &times;
+        </button>
+
+        <div class="order-success-icon" aria-hidden="true">
+            ✓
+        </div>
+
+        <p class="order-modal-eyebrow">
+            Order Confirmed
+        </p>
+
+        <h2 id="orderModalTitle">
+            Your order has been received
+        </h2>
+
+        <p
+            id="orderModalMessage"
+            class="order-modal-message"
+        ></p>
+
+        <div class="order-summary">
+            <div>
+                <span>Order Number</span>
+                <strong id="orderModalNumber">—</strong>
+            </div>
+
+            <div>
+                <span>Total</span>
+                <strong id="orderModalTotal">—</strong>
+            </div>
+
+            <div>
+                <span>Payment</span>
+                <strong id="orderModalPayment">—</strong>
+            </div>
+        </div>
+
+        <div class="order-modal-actions">
+            <a
+                href="orders.html"
+                class="btn btn-primary"
+                id="viewOrdersButton"
+            >
+                View My Orders
+            </a>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                data-close-order-modal
+            >
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+</div>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar">
@@ -83,11 +166,38 @@
                     <span class="tagline">Authentic Ghanaian Cuisine</span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="menu.html" class="active">Menu</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Order Now</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Order Now</a></li>
+    <li>
+        <a href="orders.html">
+              My Orders
+              </a>
+             </li>
                 </ul>
+
+                <button
+    type="button"
+    class="cart-toggle"
+    id="cartToggle"
+    aria-label="Open cart"
+>
+    <span
+        class="cart-icon"
+        aria-hidden="true"
+    >
+        🛒
+    </span>
+
+    <span
+        class="cart-count"
+        id="cartCount"
+    >
+        0
+    </span>
+</button>
+
                 <div class="hamburger">
                     <span></span>
                     <span></span>

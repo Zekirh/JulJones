@@ -178,7 +178,9 @@
 
                     <p>
                         Already have an account?
-                        <a href="login.html">
+                        <a
+                         href="login.html?redirect=orders.html"
+>
                             Log in
                         </a>
                     </p>
@@ -359,7 +361,17 @@
 
                 if (data.session) {
 
-                    window.location.href =
+                   const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+           const redirect =
+             params.get("redirect") ||
+          "orders.html";
+
+           window.location.href =
+             redirect; window.location.href =
                         "orders.html";
 
                     return;

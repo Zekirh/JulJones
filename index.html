@@ -73,6 +73,141 @@
         rel="stylesheet"
     >
 </head>
+
+<!-- App Notifications -->
+<div
+    id="toastContainer"
+    class="toast-container"
+    aria-live="polite"
+    aria-atomic="true"
+></div>
+
+<div
+    id="orderModal"
+    class="order-modal"
+    hidden
+    aria-labelledby="orderModalTitle"
+    aria-modal="true"
+    role="dialog"
+>
+    <div class="order-modal-backdrop" data-close-order-modal></div>
+
+    <div class="order-modal-card">
+        <button
+            type="button"
+            class="order-modal-close"
+            data-close-order-modal
+            aria-label="Close order confirmation"
+        >
+            &times;
+        </button>
+
+        <div class="order-success-icon" aria-hidden="true">
+            ✓
+        </div>
+
+        <p class="order-modal-eyebrow">
+            Order Confirmed
+        </p>
+
+        <h2 id="orderModalTitle">
+            Your order has been received
+        </h2>
+
+        <p
+            id="orderModalMessage"
+            class="order-modal-message"
+        ></p>
+
+        <div class="order-summary">
+            <div>
+                <span>Order Number</span>
+                <strong id="orderModalNumber">—</strong>
+            </div>
+
+            <div>
+                <span>Total</span>
+                <strong id="orderModalTotal">—</strong>
+            </div>
+
+            <div>
+                <span>Payment</span>
+                <strong id="orderModalPayment">—</strong>
+            </div>
+        </div>
+
+        <div class="order-modal-actions">
+            <a
+                href="orders.html"
+                class="btn btn-primary"
+                id="viewOrdersButton"
+            >
+                View My Orders
+            </a>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                data-close-order-modal
+            >
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- App Confirmation Dialog -->
+<div
+    id="confirmModal"
+    class="confirm-modal"
+    hidden
+    aria-modal="true"
+    role="dialog"
+    aria-labelledby="confirmModalTitle"
+>
+    <div
+        class="confirm-modal-backdrop"
+        data-close-confirm
+    ></div>
+
+    <div class="confirm-modal-card">
+
+        <div class="confirm-modal-icon" aria-hidden="true">
+            ?
+        </div>
+
+        <h2 id="confirmModalTitle">
+            Are you sure?
+        </h2>
+
+        <p id="confirmModalMessage">
+            Are you sure you want to continue?
+        </p>
+
+        <div class="confirm-modal-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="confirmCancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="confirmAction"
+            >
+                Confirm
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+
 <body>
     <!-- Navigation -->
     <nav class="navbar">
@@ -87,7 +222,33 @@
                     <li><a href="menu.html">Menu</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="contact.html">Order Now</a></li>
+                     <a href="orders.html">
+            My Orders
+        </a>
+    </li>
                 </ul>
+
+                <button
+    type="button"
+    class="cart-toggle"
+    id="cartToggle"
+    aria-label="Open cart"
+>
+    <span
+        class="cart-icon"
+        aria-hidden="true"
+    >
+        🛒
+    </span>
+
+    <span
+        class="cart-count"
+        id="cartCount"
+    >
+        0
+    </span>
+</button>
+
                 <div class="hamburger">
                     <span></span>
                     <span></span>
@@ -115,71 +276,190 @@
     </section>
 
     <!-- Featured Dishes -->
-    <section class="featured-dishes">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Signature Dishes</h2>
-                <p class="section-subtitle">Handcrafted with love and authentic Ghanaian spices</p>
-            </div>
-            <div class="dishes-grid">
-                <div class="dish-card">
-                    <div class="dish-image">
-                        <div class="dish-placeholder jollof"></div>
-                        <div class="dish-overlay">
-                            <span class="dish-price">₵25</span>
-                        </div>
-                    </div>
-                    <div class="dish-info">
-                        <h3>Jollof Rice</h3>
-                        <p>Our famous one-pot rice dish cooked in rich tomato sauce with aromatic spices</p>
-                        <a href="menu.html#jollof" class="dish-link">View Details →</a>
-                    </div>
-                </div>
-                <div class="dish-card">
-                    <div class="dish-image">
-                        <div class="dish-placeholder fried-rice"></div>
-                        <div class="dish-overlay">
-                            <span class="dish-price">₵28</span>
-                        </div>
-                    </div>
-                    <div class="dish-info">
-                        <h3>Fried Rice</h3>
-                        <p>Perfectly seasoned rice stir-fried with fresh vegetables and your choice of protein</p>
-                        <a href="menu.html#fried-rice" class="dish-link">View Details →</a>
-                    </div>
-                </div>
-                <div class="dish-card">
-                    <div class="dish-image">
-                        <div class="dish-placeholder waakye"></div>
-                        <div class="dish-overlay">
-                            <span class="dish-price">₵22</span>
-                        </div>
-                    </div>
-                    <div class="dish-info">
-                        <h3>Waakye</h3>
-                        <p>Traditional rice and beans cooked with millet leaves, served with shito and gari</p>
-                        <a href="menu.html#waakye" class="dish-link">View Details →</a>
-                    </div>
-                </div>
-                <div class="dish-card">
-                    <div class="dish-image">
-                        <div class="dish-placeholder yam"></div>
-                        <div class="dish-overlay">
-                            <span class="dish-price">₵20</span>
-                        </div>
-                    </div>
-                    <div class="dish-info">
-                        <h3>Yam</h3>
-                        <p>Delicious yam served with your choice of sauce or stew</p>
-                        <a href="menu.html#yam" class="dish-link">View Details →</a>
-                    </div>
-                </div>
-            </div>
-            <div class="view-all">
-                <a href="menu.html" class="btn btn-outline">View Full Menu</a>
-            </div>
+   <!-- Featured Dishes -->
+<section class="featured-dishes">
+    <div class="container">
+
+        <div class="section-header">
+            <span class="section-eyebrow">FROM OUR KITCHEN</span>
+
+            <h2 class="section-title">
+                Customer Favorites
+            </h2>
+
+            <p class="section-subtitle">
+                Authentic Ghanaian dishes, freshly prepared and ready when you are.
+            </p>
         </div>
-    </section>
+
+        <div class="dishes-grid">
+
+            <!-- Jollof -->
+            <article
+                class="dish-card"
+                data-dish-id="jollof-rice"
+            >
+                <div class="dish-image">
+                    <div class="dish-placeholder jollof"></div>
+
+                    <div class="dish-overlay">
+                        <span class="dish-price">
+                            ₵25.00
+                        </span>
+                    </div>
+                </div>
+
+                <div class="dish-info">
+
+                    <div class="dish-card-heading">
+                        <h3>Jollof Rice</h3>
+                        <span class="dish-card-badge">
+                            Popular
+                        </span>
+                    </div>
+
+                    <p>
+                        Our famous one-pot rice dish cooked
+                        in rich tomato sauce with aromatic spices.
+                    </p>
+
+                    <a
+                        href="menu.html#jollof-rice"
+                        class="dish-link"
+                    >
+                        View on Menu →
+                    </a>
+
+                </div>
+            </article>
+
+
+            <!-- Fried Rice -->
+            <article
+                class="dish-card"
+                data-dish-id="fried-rice"
+            >
+                <div class="dish-image">
+                    <div class="dish-placeholder fried-rice"></div>
+
+                    <div class="dish-overlay">
+                        <span class="dish-price">
+                            ₵25.00
+                        </span>
+                    </div>
+                </div>
+
+                <div class="dish-info">
+
+                    <div class="dish-card-heading">
+                        <h3>Fried Rice</h3>
+                    </div>
+
+                    <p>
+                        Perfectly seasoned rice stir-fried
+                        with fresh vegetables and delicious accompaniments.
+                    </p>
+
+                    <a
+                        href="menu.html#fried-rice"
+                        class="dish-link"
+                    >
+                        View on Menu →
+                    </a>
+
+                </div>
+            </article>
+
+
+            <!-- Waakye -->
+            <article
+                class="dish-card"
+                data-dish-id="waakye"
+            >
+                <div class="dish-image">
+                    <div class="dish-placeholder waakye"></div>
+
+                    <div class="dish-overlay">
+                        <span class="dish-price">
+                            ₵25.00
+                        </span>
+                    </div>
+                </div>
+
+                <div class="dish-info">
+
+                    <div class="dish-card-heading">
+                        <h3>Waakye</h3>
+                    </div>
+
+                    <p>
+                        Traditional rice and beans served
+                        with the rich flavors that make Waakye a classic.
+                    </p>
+
+                    <a
+                        href="menu.html#waakye"
+                        class="dish-link"
+                    >
+                        View on Menu →
+                    </a>
+
+                </div>
+            </article>
+
+
+            <!-- Yam -->
+            <article
+                class="dish-card"
+                data-dish-id="yam"
+            >
+                <div class="dish-image">
+                    <div class="dish-placeholder yam"></div>
+
+                    <div class="dish-overlay">
+                        <span class="dish-price">
+                            ₵20.00
+                        </span>
+                    </div>
+                </div>
+
+                <div class="dish-info">
+
+                    <div class="dish-card-heading">
+                        <h3>Yam</h3>
+                    </div>
+
+                    <p>
+                        Delicious yam served with
+                        your choice of sauce or stew.
+                    </p>
+
+                    <a
+                        href="menu.html#yam"
+                        class="dish-link"
+                    >
+                        View on Menu →
+                    </a>
+
+                </div>
+            </article>
+
+        </div>
+
+        <div class="view-all">
+
+            <a
+                href="menu.html"
+                class="btn btn-outline"
+            >
+                Explore Full Menu
+                <span aria-hidden="true">→</span>
+            </a>
+
+        </div>
+
+    </div>
+</section>
 
     <!-- Why Choose Us -->
     <section class="why-choose">
